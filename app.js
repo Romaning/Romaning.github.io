@@ -8,7 +8,7 @@
  */
 
 const clientId = 'e2f650471db0457a962a675206842bb1'; // your clientId
-const redirectUrl = 'https://localhost:8084';        // your redirect URL - must be localhost URL and/or HTTPS
+const redirectUrl = 'https://romaning.github.io';        // your redirect URL - must be localhost URL and/or HTTPS
 
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token";
