@@ -106,14 +106,11 @@ async function getUserData() {
 // Authorization token that must have been created previously. See : https://developer.spotify.com/documentation/web-api/concepts/authorization
 //const token = 'BQDBTQB1zEX0VMD1Lt1a-bI7qZVEhFaPnu7N_PpdUZkbFsz55rX4i5Mq2Lc2bg0j-RLWXusiCwDY2BpL9mbjwaaTu1DPk7Hr8MTiqUxIGhylejP3TVODzvrui83TQZlNnJrRcHnFlg4cjRyEB6s28n34RcTcecn64Zxk8FIgcjJ8isK1o028sH-QdTqAQzXj5mNOz82ChsyvuI9toDLj7fkUiyNzafscwEBwehQkL0mjAq0PgX7NoGWz3h1tLcql4pBmGQm-7BUDzgggu520QGNnSFtLzmNF-m2RB7jx9SeOTy1iKkteqxRx';
 
-async function fetchWebApi(endpoint, method, body) {
-  const token = 'BQCuAwDsB1dGRyL83xpI3gkp6vaACYq10G3V4ivx7KbVucIYEmz5Y8-SKJYryTkLiSFSk5MQPWRRvpv2DfEkzMKtvjAJTir-XRzCad9iGpYOEhxmfEyFMlq5Ybzj2VZzBltjNHZBL6KCGqEHSiNgcgG2ZmdrxO8WGNhKJ16NHQS_gCb8iGsfQzum4ht7IzPApayMD0hm9quEvZ265Ooh2Zi9si8GoXHGe6hfYUEdwoWVJQiD_JYirA';
+async function fetchWebApi(endpoint, body) {
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    method,
-    body:JSON.stringify(body)
+    method: 'GET',
+    headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
+    body: JSON.stringify(body)
   });
   return await res.json();
 }
@@ -221,7 +218,7 @@ async function refreshTokenClick() {
 
 async function getTopTracks(){
   // Endpoint reference : https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
-  return (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;
+  return (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5')).items;
 }
 
 async function getTracksClick(){
