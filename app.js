@@ -15,7 +15,7 @@ const redirectUrl = 'https://romaning.github.io';
 
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token";
-const apiEndpoint = "https://open.spotify.com";
+const apiEndpoint = "https://api.spotify.com";
 //const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private ugc-image-upload';
 //const scope = 'ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-follow-modify user-follow-read user-read-playback-position user-read-recently-played user-library-modify user-library-read user-read-email user-read-private user-soa-link user-soa-unlink soa-manage-entitlements soa-manage-partner soa-create-partner'
 const scope = 'user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read streaming user-read-email user-read-private playlist-modify-public playlist-modify-private user-read-recently-played user-library-modify user-library-read' 
@@ -107,7 +107,7 @@ async function refreshToken() {
 
 // El servicio para obtener los datos del usuario
 async function getUserData() {
-  const response = await fetch("https://api.spotify.com/v1/me", {
+  const response = await fetch(`${apiEndpoint}/v1/me`, {
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
   });
