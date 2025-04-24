@@ -118,13 +118,14 @@ async function getUserData() {
 
 async function fetchWebApi(endpoint) {
   const response = await fetch("https://api.spotify.com/" + endpoint, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + currentToken.access_token 
     },
-    body: new URLSearchParams({
-      client_id: clientId,
-    }),
+    body: JSON.stringify(body)
+    // body: new URLSearchParams({
+    //   client_id: clientId,
+    // }),
   });
 
   return await response.json();
