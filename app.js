@@ -122,7 +122,7 @@ async function fetchWebApi(endpoint) {
     headers: {
       'Authorization': 'Bearer ' + currentToken.access_token 
     },
-    body: JSON.stringify(body)
+    //body: JSON.stringify(body)
     // body: new URLSearchParams({
     //   client_id: clientId,
     // }),
