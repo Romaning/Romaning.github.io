@@ -15,7 +15,8 @@ const redirectUrl = 'https://romaning.github.io';
 
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token";
-const scope = 'user-read-private user-read-email';
+//const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private ugc-image-upload';
+const scope = 'ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-follow-modify user-follow-read user-read-playback-position user-read-recently-played user-library-modify user-library-read user-read-email user-read-private user-soa-link user-soa-unlink soa-manage-entitlements soa-manage-partner soa-create-partner'
 //#endregion 
 
 //#region ENTITIES (Getters y Setters) y DATABASES
@@ -106,13 +107,27 @@ async function getUserData() {
 // Authorization token that must have been created previously. See : https://developer.spotify.com/documentation/web-api/concepts/authorization
 //const token = 'BQDBTQB1zEX0VMD1Lt1a-bI7qZVEhFaPnu7N_PpdUZkbFsz55rX4i5Mq2Lc2bg0j-RLWXusiCwDY2BpL9mbjwaaTu1DPk7Hr8MTiqUxIGhylejP3TVODzvrui83TQZlNnJrRcHnFlg4cjRyEB6s28n34RcTcecn64Zxk8FIgcjJ8isK1o028sH-QdTqAQzXj5mNOz82ChsyvuI9toDLj7fkUiyNzafscwEBwehQkL0mjAq0PgX7NoGWz3h1tLcql4pBmGQm-7BUDzgggu520QGNnSFtLzmNF-m2RB7jx9SeOTy1iKkteqxRx';
 
-async function fetchWebApi(endpoint, body) {
-  const res = await fetch(`https://api.spotify.com/${endpoint}`, {
-    method: 'GET',
-    headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
-    body: JSON.stringify(body)
+// async function fetchWebApi(endpoint, body) {
+//   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
+//     method: 'GET',
+//     headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
+//     body: JSON.stringify(body)
+//   });
+//   return await res.json();
+// }
+
+async function fetchWebApi(endpoint) {
+  const response = await fetch("https://api.spotify.com/" + endpoint, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + currentToken.access_token 
+    },
+    body: new URLSearchParams({
+      client_id: clientId,
+    }),
   });
-  return await res.json();
+
+  return await response.json();
 }
 
 //#endregion
