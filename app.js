@@ -107,7 +107,7 @@ async function refreshToken() {
 
 // El servicio para obtener los datos del usuario
 async function getUserData() {
-  const response = await fetch(`${apiEndpoint}/v1/me`, {
+  const response = await fetch("https://api.spotify.com/v1/me", {
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
   });
