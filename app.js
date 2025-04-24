@@ -18,42 +18,11 @@ const tokenEndpoint = "https://accounts.spotify.com/api/token";
 const scope = 'user-read-private user-read-email';
 //#endregion 
 
-// HTML Template Rendering with basic data binding - demoware only.
-function renderTemplate(targetId, templateId, data = null) {
-  const template = document.getElementById(templateId);
-  const clone = template.content.cloneNode(true);
-
-  const elements = clone.querySelectorAll("*");
-  elements.forEach(ele => {
-    const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
-
-    bindingAttrs.forEach(attr => {
-      const target = attr.name.replace(/data-bind-/, "").replace(/data-bind/, "");
-      const targetType = target.startsWith("onclick") ? "HANDLER" : "PROPERTY";
-      const targetProp = target === "" ? "innerHTML" : target;
-
-      const prefix = targetType === "PROPERTY" ? "data." : "";
-      const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
-
-      // Maybe use a framework with more validation here ;)
-      try {
-        ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => { eval(expression) };
-        ele.removeAttribute(attr.name);
-      } catch (ex) {
-        console.error(`Error binding ${expression} to ${targetProp}`, ex);
-      }
-    });
-  });
-
-  const target = document.getElementById(targetId);
-  target.innerHTML = "";
-  target.appendChild(clone);
-}
-
-//#region ENTITIES and DATABASES
+//#region ENTITIES (Getters y Setters) y DATABASES
 // Data structure that manages the current active token, caching it in localStorage
 const currentToken = {
 
+  /* estos son los getters, se usanar despues de haber seteado */
   get access_token() { 
     return localStorage.getItem('access_token') || null; 
   },
@@ -70,6 +39,7 @@ const currentToken = {
     return localStorage.getItem('expires') || null 
   },
 
+  /* Estos son los setters, se usa antes para guardar y luego se recuperar con los getters*/
   save: function (response) {
     const { access_token, refresh_token, expires_in } = response;
     localStorage.setItem('access_token', access_token);
@@ -83,36 +53,6 @@ const currentToken = {
 };
 //#endregion
 
-//#region MAIN
-// On page load, try to fetch auth code from current browser search URL
-const args = new URLSearchParams(window.location.search);
-const code = args.get('code');
-
-// If we find a code, we're in a callback, do a token exchange
-if (code) {
-  const token = await getToken(code);
-  currentToken.save(token);
-
-  // Remove code from URL so we can refresh correctly.
-  const url = new URL(window.location.href);
-  url.searchParams.delete("code");
-
-  const updatedUrl = url.search ? url.href : url.href.replace('?', '');
-  window.history.replaceState({}, document.title, updatedUrl);
-}
-
-// If we have a token, we're logged in, so fetch user data and render logged in template
-if (currentToken.access_token) {
-  const userData = await getUserData();
-  renderTemplate("main", "logged-in-template", userData);
-  renderTemplate("oauth", "oauth-template", currentToken);
-}
-
-// Otherwise we're not logged in, so render the login template
-if (!currentToken.access_token) {
-  renderTemplate("main", "login");F
-}
-//#endregion
 
 //#region SERVICES - Llamada a las APIs de Spotify
 /* Servicio para obtener un token */
@@ -164,7 +104,40 @@ async function getUserData() {
 }
 //#endregion
               
-//#region ACCIONES que activan FUNCIONES
+//#region VIEWS
+// HTML Template Rendering with basic data binding - demoware only.
+function renderTemplate(targetId, templateId, data = null) {
+  const template = document.getElementById(templateId);
+  const clone = template.content.cloneNode(true);
+
+  const elements = clone.querySelectorAll("*");
+  elements.forEach(ele => {
+    const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
+
+    bindingAttrs.forEach(attr => {
+      const target = attr.name.replace(/data-bind-/, "").replace(/data-bind/, "");
+      const targetType = target.startsWith("onclick") ? "HANDLER" : "PROPERTY";
+      const targetProp = target === "" ? "innerHTML" : target;
+
+      const prefix = targetType === "PROPERTY" ? "data." : "";
+      const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
+
+      // Maybe use a framework with more validation here ;)
+      try {
+        ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => { eval(expression) };
+        ele.removeAttribute(attr.name);
+      } catch (ex) {
+        console.error(`Error binding ${expression} to ${targetProp}`, ex);
+      }
+    });
+  });
+
+  const target = document.getElementById(targetId);
+  target.innerHTML = "";
+  target.appendChild(clone);
+}
+
+//#region like CONTROLLER
 async function redirectToSpotifyAuthorize() {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const randomValues = crypto.getRandomValues(new Uint8Array(64));
@@ -210,5 +183,39 @@ async function refreshTokenClick() {
   const token = await refreshToken();
   currentToken.save(token);
   renderTemplate("oauth", "oauth-template", currentToken);
+}
+//#endregion
+
+//#region MAIN
+// On page load, try to fetch auth code from current browser search URL
+/* AL CARGAR EL NAVEGADOR OBTENER RAPIDAMENTE SI ES CODE EXISTE */
+const args = new URLSearchParams(window.location.search);
+const code = args.get('code');
+
+// If we find a code, we're in a callback, do a token exchange
+/* Si encuentro el code con contenido entonces */
+console.log(code)
+if (code) {
+  const token = await getToken(code);
+  currentToken.save(token);
+
+  // Remove code from URL so we can refresh correctly.
+  const url = new URL(window.location.href);
+  url.searchParams.delete("code");
+
+  const updatedUrl = url.search ? url.href : url.href.replace('?', '');
+  window.history.replaceState({}, document.title, updatedUrl);
+}
+
+// If we have a token, we're logged in, so fetch user data and render logged in template
+if (currentToken.access_token) {
+  const userData = await getUserData();
+  renderTemplate("main", "logged-in-template", userData);
+  renderTemplate("oauth", "oauth-template", currentToken);
+}
+
+// Otherwise we're not logged in, so render the login template
+if (!currentToken.access_token) {
+  renderTemplate("main", "login");F
 }
 //#endregion
