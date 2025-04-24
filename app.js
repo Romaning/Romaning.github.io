@@ -19,7 +19,7 @@ const scope = 'user-read-private user-read-email';
 //#endregion 
 
 //#region ENTITIES (Getters y Setters) y DATABASES
-// Data structure that manages the current active token, caching it in localStorage
+/* Estructura de datos que administra el token activo actual y lo almacena en cache en localStorage */
 const currentToken = {
 
   /* estos son los getters, se usanar despues de haber seteado */
@@ -105,15 +105,31 @@ async function getUserData() {
 //#endregion
               
 //#region VIEWS
-// HTML Template Rendering with basic data binding - demoware only.
-function renderTemplate(targetId, templateId, data = null) {
+/* 
+  Representacion de plantillas HTML con enlace de datos básico (solo software de demostracion).
+  aqui funciona igual que en ANGULAR con los Data Binding (OneWay Binding o Two Way DataBinding)
+
+  - para refresar el token
+  renderTemplate("oauth", "oauth-template", currentToken); #oauth-template
+
+  - si tenemos token, mostrar datos
+  renderTemplate("main", "logged-in-template", userData); #logged-in-template
+  renderTemplate("oauth", "oauth-template", currentToken); #oauth-template
+
+  - si NO tenemos token 
+  renderTemplate("main", "login");
+*/
+function renderTemplate(targetId /* a donde se renderiza */, templateId /* que plantilla agarraremos para visualizar */, data = null) {
   const template = document.getElementById(templateId);
   const clone = template.content.cloneNode(true);
-
+  /* Seleccionamos todos los elementos dentro de la plantilla que vamos a mostrar dentro de main o oauth*/
   const elements = clone.querySelectorAll("*");
   elements.forEach(ele => {
+    
+    /* Tomamos todo aquello que tenga data-bind como propiedad como si fuese un ng-model*/
     const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
 
+    /* Recorremos cada elemento */
     bindingAttrs.forEach(attr => {
       const target = attr.name.replace(/data-bind-/, "").replace(/data-bind/, "");
       const targetType = target.startsWith("onclick") ? "HANDLER" : "PROPERTY";
@@ -122,7 +138,7 @@ function renderTemplate(targetId, templateId, data = null) {
       const prefix = targetType === "PROPERTY" ? "data." : "";
       const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
 
-      // Maybe use a framework with more validation here ;)
+      /* Quiza sea mejor utilizar un framework con más validación aquí */
       try {
         ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => { eval(expression) };
         ele.removeAttribute(attr.name);
@@ -165,10 +181,12 @@ async function redirectToSpotifyAuthorize() {
   };
 
   authUrl.search = new URLSearchParams(params).toString();
-  window.location.href = authUrl.toString(); // Redirect the user to the authorization server for login
+  /* Redireccionar al usuario al login para autenticarse con el servidor*/
+  /* Redirigir al usuario al servidor de autorización para iniciar sesion */
+  window.location.href = authUrl.toString();
 }
 
-// Click handlers
+/* Se activan como controladores, realizan algo o escriben en la BD directamente, obtienen token, permite la salida del sistema*/
 async function loginWithSpotifyClick() {
   await redirectToSpotifyAuthorize();
 }
@@ -187,12 +205,12 @@ async function refreshTokenClick() {
 //#endregion
 
 //#region MAIN
-// On page load, try to fetch auth code from current browser search URL
-/* AL CARGAR EL NAVEGADOR OBTENER RAPIDAMENTE SI ES CODE EXISTE */
+// Al cargar la página, intente obtener el código de autorización de la URL de búsqueda del navegador actual
+/* AL CARGAR EL NAVEGADOR OBTENER RAPIDAMENTE SI CODE EXISTE */
 const args = new URLSearchParams(window.location.search);
 const code = args.get('code');
 
-// If we find a code, we're in a callback, do a token exchange
+// Si encontramos un código, estamos en una devolución de llamada, hacemos un intercambio de tokens
 /* Si encuentro el code con contenido entonces */
 console.log(code)
 if (code) {
@@ -202,7 +220,7 @@ if (code) {
   console.log("Guardamos el token en el local storage");
   currentToken.save(token);
 
-  // Remove code from URL so we can refresh correctly.
+  // Eliminar el código de la URL para que podamos actualizar correctamente.
   /* Eliminar el code desde el URL para que nosotros podamos refrescar correcatmente */
   console.log("Obtenemos el href de windows");
   const url = new URL(window.location.href);
@@ -217,17 +235,47 @@ if (code) {
   window.history.replaceState({}, document.title, updatedUrl);
 }
 
-// If we have a token, we're logged in, so fetch user data and render logged in template
-/* Si tenemos un token, si etamos logeados, entonces mostramos la pagina de logeado, mostrando todos los datos del usuario */
+// Si tenemos un token, hemos iniciado sesión, por lo que obtenemos los datos del usuario y representamos la plantilla de inicio de sesión.
+/* Si tenemos un token, si estamos LOGEADOS, entonces mostramos la pagina de logeado, MOSTRANDO todos los DATOS DEL USUARIO*/
 if (currentToken.access_token) {
   const userData = await getUserData();
   renderTemplate("main", "logged-in-template", userData);
   renderTemplate("oauth", "oauth-template", currentToken);
 }
 
-// Otherwise we're not logged in, so render the login template
+// De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.
 /* Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login*/
 if (!currentToken.access_token) {
   renderTemplate("main", "login");
 }
 //#endregion
+
+
+
+// Authorization token that must have been created previously. See : https://developer.spotify.com/documentation/web-api/concepts/authorization
+//const token = 'BQDBTQB1zEX0VMD1Lt1a-bI7qZVEhFaPnu7N_PpdUZkbFsz55rX4i5Mq2Lc2bg0j-RLWXusiCwDY2BpL9mbjwaaTu1DPk7Hr8MTiqUxIGhylejP3TVODzvrui83TQZlNnJrRcHnFlg4cjRyEB6s28n34RcTcecn64Zxk8FIgcjJ8isK1o028sH-QdTqAQzXj5mNOz82ChsyvuI9toDLj7fkUiyNzafscwEBwehQkL0mjAq0PgX7NoGWz3h1tLcql4pBmGQm-7BUDzgggu520QGNnSFtLzmNF-m2RB7jx9SeOTy1iKkteqxRx';
+const token = currentToken.access_token;
+async function fetchWebApi(endpoint, method, body) {
+  const res = await fetch(`https://api.spotify.com/${endpoint}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method,
+    body:JSON.stringify(body)
+  });
+  return await res.json();
+}
+
+async function getTopTracks(){
+  // Endpoint reference : https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
+  return (await fetchWebApi(
+    'v1/me/top/tracks?time_range=long_term&limit=5', 'GET'
+  )).items;
+}
+
+const topTracks = await getTopTracks();
+console.log(
+  topTracks?.map(
+    ({name, artists}) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
+  )
+);
