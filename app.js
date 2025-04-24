@@ -228,6 +228,6 @@ if (currentToken.access_token) {
 // Otherwise we're not logged in, so render the login template
 /* Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login*/
 if (!currentToken.access_token) {
-  renderTemplate("main", "login");F
+  renderTemplate("main", "login");
 }
 //#endregion
