@@ -16,7 +16,8 @@ const redirectUrl = 'https://romaning.github.io';
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token";
 //const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private ugc-image-upload';
-const scope = 'ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-follow-modify user-follow-read user-read-playback-position user-read-recently-played user-library-modify user-library-read user-read-email user-read-private user-soa-link user-soa-unlink soa-manage-entitlements soa-manage-partner soa-create-partner'
+//const scope = 'ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-follow-modify user-follow-read user-read-playback-position user-read-recently-played user-library-modify user-library-read user-read-email user-read-private user-soa-link user-soa-unlink soa-manage-entitlements soa-manage-partner soa-create-partner'
+const scope = 'user-read-playback-state user-modify-playback-state streaming user-read-email user-read-private playlist-modify-public playlist-modify-private' 
 //#endregion 
 
 //#region ENTITIES (Getters y Setters) y DATABASES
