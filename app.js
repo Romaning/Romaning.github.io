@@ -107,7 +107,7 @@ async function getUserData() {
 //const token = 'BQDBTQB1zEX0VMD1Lt1a-bI7qZVEhFaPnu7N_PpdUZkbFsz55rX4i5Mq2Lc2bg0j-RLWXusiCwDY2BpL9mbjwaaTu1DPk7Hr8MTiqUxIGhylejP3TVODzvrui83TQZlNnJrRcHnFlg4cjRyEB6s28n34RcTcecn64Zxk8FIgcjJ8isK1o028sH-QdTqAQzXj5mNOz82ChsyvuI9toDLj7fkUiyNzafscwEBwehQkL0mjAq0PgX7NoGWz3h1tLcql4pBmGQm-7BUDzgggu520QGNnSFtLzmNF-m2RB7jx9SeOTy1iKkteqxRx';
 
 async function fetchWebApi(endpoint, method, body) {
-  const token = currentToken.access_token;
+  const token = 'BQCuAwDsB1dGRyL83xpI3gkp6vaACYq10G3V4ivx7KbVucIYEmz5Y8-SKJYryTkLiSFSk5MQPWRRvpv2DfEkzMKtvjAJTir-XRzCad9iGpYOEhxmfEyFMlq5Ybzj2VZzBltjNHZBL6KCGqEHSiNgcgG2ZmdrxO8WGNhKJ16NHQS_gCb8iGsfQzum4ht7IzPApayMD0hm9quEvZ265Ooh2Zi9si8GoXHGe6hfYUEdwoWVJQiD_JYirA';
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
