@@ -60,7 +60,21 @@
 
     <button id="refresh-token-button" data-bind-onclick="refreshTokenClick();">Refresh Token</button>
     <button id="logout-button" data-bind-onclick="logoutClick();">Log out</button>
-    <button id="get-tracks-button" data-bind-onclick="getTracksClick();">Obtener 5 Tracks</button>
+    <!-- Adicionado el data-bind debe estar en el formato mostrado, esto lo procesa en el js y lo conbierte en un onlick para activar la funcion descrita-->
+    <button id="get-tracks-button" data-bind-onclick="getTracksClick();">Obtener las 5 mas escuchadas de mi lista</button>
+    <button id="get-create-playlist-button" data-bind-onclick="createPlaylistAndAddTracksClick();">Crear una playlist y agregar 5 canciones</button>
+
+    <!-- const playlistId = '3ti4WrByIYHh1spqJDrzX4'; -->
+    <iframe
+      title="Spotify Embed: Recommendation Playlist "
+      src="https://open.spotify.com/embed/playlist/3ti4WrByIYHh1spqJDrzX4?utm_source=generator&theme=0"
+      width="100%"
+      height="100%"
+      style="minHeight: '360px';"
+      frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+    ></iframe>
   </template>
 
   <!-- SI SE TIENE TOKEN -->
