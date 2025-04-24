@@ -196,18 +196,29 @@ const code = args.get('code');
 /* Si encuentro el code con contenido entonces */
 console.log(code)
 if (code) {
+  console.log("Ingresa a otbtener token");
   const token = await getToken(code);
+  console.log(token);
+  console.log("Guardamos el token en el local storage");
   currentToken.save(token);
 
   // Remove code from URL so we can refresh correctly.
+  /* Eliminar el code desde el URL para que nosotros podamos refrescar correcatmente */
+  console.log("Obtenemos el href de windows");
   const url = new URL(window.location.href);
+  console.log(url);
+  console.log("eliminamos code del url");
   url.searchParams.delete("code");
+  console.log(url);
 
+  console.log("buscamos reemplazar algo");
   const updatedUrl = url.search ? url.href : url.href.replace('?', '');
+  console.log(updatedUrl);
   window.history.replaceState({}, document.title, updatedUrl);
 }
 
 // If we have a token, we're logged in, so fetch user data and render logged in template
+/* Si tenemos un token, si etamos logeados, entonces mostramos la pagina de logeado, mostrando todos los datos del usuario */
 if (currentToken.access_token) {
   const userData = await getUserData();
   renderTemplate("main", "logged-in-template", userData);
@@ -215,6 +226,7 @@ if (currentToken.access_token) {
 }
 
 // Otherwise we're not logged in, so render the login template
+/* Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login*/
 if (!currentToken.access_token) {
   renderTemplate("main", "login");F
 }
