@@ -328,7 +328,7 @@ if (currentToken.access_token) {
 
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.
 // Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login
-if (!currentToken.access_token) {
+if (!currentToken.access_token) {|
   renderTemplate("main", "login");
 }
 //#endregion
