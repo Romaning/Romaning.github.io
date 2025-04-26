@@ -1,355 +1,339 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="shortcut icon" href="./assets/logo.png" type="image/x-icon">
-    <title>Mi Reproductor</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="shortcut icon" href="./assets/logo.png" type="image/x-icon">
+  <title>Mi Reproductor</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
-    <div id="main"></div>
-    <div id="oauth"></div>
+  <div id="main" hidden></div>
+  <div id="oauth" hidden></div>
+  <!-- SI NO SE TIENE TOKEN -->
+  <template id="login">
+    <button id="login-button" class="badge pointer hide scale transition" data-bind-onclick="loginWithSpotifyClick();">
+      Iniciar Sesión </button>
+  </template>
 
-    <!-- SI NO SE TIENE TOKEN -->
-    <template id="login">
-        <h1>Welcome to the OAuth2 PKCE Example</h1>
-        <button id="login-button" data-bind-onclick="loginWithSpotifyClick();"> Log in with Spotify </button>
-    </template>
-    <!-- SI SE TIENE TOKEN -->
-    <template id="logged-in-template">
-        <h1>Logged in as <span data-bind="display_name"></span></h1>
-        <img width="150" data-bind-src="images[0].url" data-bind-alt="display_name" />
-        <table>
-            <tr>
-                <td>Display name</td>
-                <td data-bind="display_name"></td>
-            </tr>
-            <tr>
-                <td>Id</td>
-                <td data-bind="id"></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td data-bind="email"></td>
-            </tr>
-            <tr>
-                <td>Spotify URI</td>
-                <td>
-                    <a data-bind="external_urls.spotify" data-bind-href="external_urls.spotify"></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Link </dt>
-                <td>
-                    <a data-bind="href" data-bind-href="href"></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Profile Image</td>
-                <td>
-                    <a data-bind-href="images[0].url" data-bind="images[0].url"></a>
-                </td>
-            </tr>
-            <tr>
-                <td>Country</td>
-                <td data-bind="country"></td>
-            </tr>
-        </table>
-
-        <button id="refresh-token-button" data-bind-onclick="refreshTokenClick();">Refresh Token</button>
-        <button id="logout-button" data-bind-onclick="logoutClick();">Log out</button>
-        <button id="get-tracks-button" data-bind-onclick="getTracksClick();">Obtener 5 Tracks</button>
-    </template>
-
-    <!-- SI SE TIENE TOKEN -->
-    <template id="oauth-template">
-        <h2>oAuth info</h2>
-        <table>
-            <tr>
-                <td>Access token</td>
-                <td data-bind="access_token"></td>
-            </tr>
-            <tr>
-                <td>Refresh token</td>
-                <td data-bind="refresh_token"></td>
-            </tr>
-            <tr>
-                <td>Expiration at</td>
-                <td data-bind="expires">${getExpirationDate(expires_in)}</td>
-            </tr>
-        </table>
-    </template>
-
-    <div class="sticky-nav-pro">
-
-        <div class="sticky-nav">
-            <div class="left-part right-part ">
-                <!-- <img class="bell pointer hover transition hide2" src="./assets/backward_icon.png" alt="Backward">
-                <img class="bell pointer hover transition hide" src="./assets/forward_icon.png" alt="forward">
-                <div class="hero">
-                    <i class="fa-solid fa-house pointer hide hide3 visible"></i>
-                </div>
-                <div class="hero hero2">
-                    <i class="fa-solid fa-magnifying-glass pointer hide3 visible"></i>
-                </div> -->
-            </div>
-            <div class="center-part">
-                <div style="display:flex;">
-                    <div class="navigate-to-main">
-                        <a class="fa-solid fa-house pointer"></a>
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-magnifying-glass pointer"></i>
-                        <input type="text" class="hide" placeholder="¿Qué quieres reproducir?">
-                    </div>
-                </div>
-            </div>
-            <div class="right-part">
-                <button class="badge pointer hide scale transition">Explorar premium</button>
-                <button class="badge pointer badge2 hover scale transition margin">
-                    <i class="hide2 fa-regular fa-circle-down"></i> Instalar aplicación</button>
-                <div class="bell hover pointer transition margin">
-                    <i class="fa-regular fa-bell scale"></i>
-                </div>
-                <div class="user pointer margin">
-                    <img data-bind-src="images[0].url" data-bind-alt="display_name" alt="user"/>
-                    <!-- <img src="./assets/letter-s.png" alt="user"> -->
-                </div>
-            </div>
-        </div>
+  <!-- si hay token renderizar en index -->
+  <template id="user-loged-img">
+    <div class="user pointer margin">
+      <img data-bind-src="images[0].url" data-bind-alt="display_name" alt="user" />
+      <!-- <img src="./assets/letter-s.png" alt="user"> -->
     </div>
-    <div class="main">
-        <div class="side-bar hide2">
-            <!-- <div class="nav">
-                <div class="nav-option transition" style="opacity: 1;">
-                    <i class="fa-solid fa-house pointer"></i>
-                    <a class="hide" href="#">Home</a>
-                </div>
+  </template>
 
-                <div class="nav-option transition hover">
-                    <i class="fa-solid fa-magnifying-glass pointer"></i>
-                    <a class="hide" href="#">¿Qué quieres reproducir?</a>
+  <!-- SI SE TIENE TOKEN renderizar en profile-->
+  <template id="logged-in-template">
+    <h1>Logged in as <span data-bind="display_name"></span></h1>
+    <img width="150" data-bind-src="images[0].url" data-bind-alt="display_name" />
+    <table>
+      <tr>
+        <td>Display name</td>
+        <td data-bind="display_name"></td>
+      </tr>
+      <tr>
+        <td>Id</td>
+        <td data-bind="id"></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td data-bind="email"></td>
+      </tr>
+      <tr>
+        <td>Spotify URI</td>
+        <td>
+          <a data-bind="external_urls.spotify" data-bind-href="external_urls.spotify"></a>
+        </td>
+      </tr>
+      <tr>
+        <td>Link </dt>
+        <td>
+          <a data-bind="href" data-bind-href="href"></a>
+        </td>
+      </tr>
+      <tr>
+        <td>Profile Image</td>
+        <td>
+          <a data-bind-href="images[0].url" data-bind="images[0].url"></a>
+        </td>
+      </tr>
+      <tr>
+        <td>Country</td>
+        <td data-bind="country"></td>
+      </tr>
+    </table>
+    <button id="refresh-token-button" data-bind-onclick="refreshTokenClick();" class="">Refresh Token</button>
+    <button id="logout-button" data-bind-onclick="logoutClick();">Log out</button>
+    <button id="get-tracks-button" data-bind-onclick="getTracksClick();">Obtener 5 Tracks</button>
+  </template>
+
+  <div class="sticky-nav-pro">
+    <div class="sticky-nav">
+      <div class="left-part right-part ">
+        <!-- <img class="bell pointer hover transition hide2" src="./assets/backward_icon.png" alt="Backward">
+              <img class="bell pointer hover transition hide" src="./assets/forward_icon.png" alt="forward">
+              <div class="hero">
+                  <i class="fa-solid fa-house pointer hide hide3 visible"></i>
+              </div>
+              <div class="hero hero2">
+                  <i class="fa-solid fa-magnifying-glass pointer hide3 visible"></i>
+              </div> -->
+      </div>
+      <div class="center-part">
+        <div style="display:flex;">
+          <div class="navigate-to-main">
+            <a class="fa-solid fa-house pointer"></a>
+          </div>
+          <div>
+            <i class="fa-solid fa-magnifying-glass pointer"></i>
+            <input type="text" class="hide search-track" placeholder="¿Qué quieres reproducir?">
+          </div>
+        </div>
+      </div>
+      <div class="right-part">
+        <button class="badge pointer hide scale transition">Explorar premium</button>
+        <button class="badge pointer badge2 hover scale transition margin">
+          <i class="hide2 fa-regular fa-circle-down"></i> Instalar aplicación</button>
+        <div class="bell hover pointer transition margin">
+          <i class="fa-regular fa-bell scale"></i>
+        </div>
+        <div id="slot-user-img"></div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="side-bar hide2">
+      <!-- <div class="nav">
+              <div class="nav-option transition" style="opacity: 1;">
+                  <i class="fa-solid fa-house pointer"></i>
+                  <a class="hide" href="#">Home</a>
+              </div>
+
+              <div class="nav-option transition hover">
+                  <i class="fa-solid fa-magnifying-glass pointer"></i>
+                  <a class="hide" href="#">¿Qué quieres reproducir?</a>
+              </div>
+          </div> -->
+
+      <div class="library">
+        <div class="option">
+          <div class="lib-option nav-option transition hover">
+            <img class="pointer" src="./assets/library_icon.png" alt="lib icon">
+            <a class="hide" href="#">Tu biblioteca</a>
+          </div>
+
+          <button class="button-crear">
+            <!-- <i class="fa-solid fa-plus pointer transition hover"></i> -->
+            <svg data-encore-id="icon" role="img" aria-hidden="true"
+              class="e-9812-icon e-9812-baseline gPxvvwdrTY6FbTx3mvl1" viewBox="0 0 16 16"
+              style="--encore-icon-height: var(--encore-graphic-size-decorative-smaller); --encore-icon-width: var(--encore-graphic-size-decorative-smaller);">
+              <path
+                d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z">
+              </path>
+            </svg>
+            <span class="e-9812-text encore-text-body-small-bold encore-internal-color-text-base"
+              data-encore-id="text">Crear</span>
+          </button>
+          <div class="icons">
+            <i class="fa-solid fa-arrow-right pointer transition hover hide"></i>
+          </div>
+        </div>
+
+        <div class="lib-boxes hide">
+          <!-- <div class="box">
+                  <p class="box-p1 pointer">Create your first playlist</p>
+                  <p class="box-p2 pointer">It's easy, we'll help you</p>
+                  <button class="badge scale transition pointer">Create playlist</button>
+              </div>
+
+              <div class="box">
+                  <p class="box-p1 pointer">Let's find some podcasts to follow</p>
+                  <p class="box-p2 pointer">We'll keep you updated on new episodes</p>
+                  <button class="badge scale transition pointer">Browse podcasts</button>
+              </div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="emb content" hidden>
+        <iframe title="Spotify Embed: Recommendation Playlist "
+          src="https://open.spotify.com/embed/playlist/3ti4WrByIYHh1spqJDrzX4?utm_source=generator&theme=0" width="100%"
+          height="100%" style="min-height: 100vh;" frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+      <div class="sticky-nav-pro">
+        <div class="sticky-nav-boottom">
+          <button class="badge all pointer">Todo</button>
+          <button class="badge badge3 transition pointer">Música</button>
+          <button class="badge badge3 transition pointer">Podcasts</button>
+        </div>
+      </div>
+
+      <h2 class="card-heading center">Recently Played</h2>
+      <div class="cards-container">
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/recent.png" alt="card image">
+          <p class="card-title">Blinding Lights</p>
+          <p class="card-info">The Weeknd</p>
+        </div>
+      </div>
+
+      <h2 class="card-heading">Featured Charts</h2>
+      <div class="cards-container">
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/card5img.jpeg" alt="card image">
+          <p class="card-title">Top Songs - Global</p>
+          <p class="card-info">Your weekly update of the most played trac...</p>
+        </div>
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/card6img.jpeg" alt="card image">
+          <p class="card-title">Top Songs - India</p>
+          <p class="card-info">Your weekly update of the most played trac...</p>
+        </div>
+      </div>
+
+      <h2 class="card-heading center">To get you started</h2>
+      <div class="cards-container">
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/getStart.jpeg" alt="card image">
+          <p class="card-title">David Kushner Mik</p>
+          <p class="card-info">Chance Pena, Tom Odell and Tom...</p>
+        </div>
+      </div>
+
+      <h2 class="card-heading">Trending now near you</h2>
+      <div class="cards-container">
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/card1img.jpeg" alt="card image">
+          <p class="card-title">Top 50 - Global</p>
+          <p class="card-info">Your daily update of the most played...</p>
+        </div>
+        <div class="card pointer">
+          <div class="play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <img class="card-img" src="./assets/top50Ind.png" alt="card image">
+          <p class="card-title">Top 50 - India</p>
+          <p class="card-info">Your daily update of the most played...</p>
+        </div>
+      </div>
+
+      <h2 class="card-heading">Spotify original podcasts</h2>
+      <div class="cards-container">
+        <div class="card pointer">
+          <img class="card-img" src="./assets/podcast1.png" alt="card image">
+          <p class="card-title">The Ranveer Show</p>
+          <p class="card-info">BeerBiceps</p>
+        </div>
+        <div class="card pointer">
+          <img class="card-img" src="./assets/podcast4.png" alt="card image">
+          <p class="card-title">Aa Modati Alajadi...</p>
+          <p class="card-info">Spotify Studios</p>
+        </div>
+        <div class="card pointer">
+          <img class="card-img" src="./assets/podcast2.png" alt="card image">
+          <p class="card-title">The Horror Show...</p>
+          <p class="card-info">TMV Studios</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+      </footer>
+    </div>
+
+    <div class="music-player">
+
+      <div class="album">
+        <div class="album2">
+          <img class="album-img pointer" src="./assets/small.png" alt="album">
+          <div class="description">
+            <p class="description1 pointer">Blinding Lights</p>
+            <p class="description2 pointer cursor time hide2">The Weeknd</p>
+          </div>
+          <div class="plush pointer cursor time hide2">
+            <i class="fa-solid fa-plus plush-icon"></i>
+          </div>
+        </div>
+        <i class="fa-solid fa-play pause2 hide hide3"></i>
+      </div>
+
+      <div class="player">
+        <div class="controls">
+          <img class="pointer hide2" src="./assets/player_icon1.png" alt="suffle">
+          <img class="pointer hide2" src="./assets/player_icon2.png" alt="backward">
+          <img class="pause pointer scale hide2" src="./assets/player_icon3.png" alt="play">
+          <img class="pointer hide2" src="./assets/player_icon4.png" alt="forward">
+          <img class="loop pointer hide2" src="./assets/player_icon5.png" alt="loop">
+        </div>
+
+        <div class="progress-bar">
+          <span class="current-time hide2">0:00</span>
+          <input type="range" name="" class="play-bar pointer" min="0" max="100">
+          <!-- <div class="ProgressBar_progressBarContainer__glVHh"><label
+                    class="ScreenReaderInput_visibleOnlyToScreenReader__TVvYo">Cambiar punto de la canción<input
+                        min="0" max="165718" step="5000" aria-valuetext="
+                00:18 /
+                02:45
+                " type="range" value="18611"></label>
+                <div class="ProgressBar_progressBarLineBackground__S9lxG">
+                    <div class="ProgressBar_progressBarLineActive__eawR7" style="transform: translateX(-100%);">
+                    </div>
+                    <div data-testid="progress-bar-line" id="progress-bar-line"
+                        class="ProgressBar_progressBarLine__a7FZb" style="transform: translateX(-88.7695%);">
+                    </div>
                 </div>
+                <div data-testid="progress-bar-slider" id="progress-bar-slider"
+                    class="ProgressBar_progressBarSlider__oFBQJ" style="left: 11.2305%;"></div>
             </div> -->
-
-            <div class="library">
-                <div class="option">
-                    <div class="lib-option nav-option transition hover">
-                        <img class="pointer" src="./assets/library_icon.png" alt="lib icon">
-                        <a class="hide" href="#">Tu biblioteca</a>
-                    </div>
-
-                    <button class="button-crear">
-                        <!-- <i class="fa-solid fa-plus pointer transition hover"></i> -->
-                        <svg data-encore-id="icon" role="img" aria-hidden="true"
-                            class="e-9812-icon e-9812-baseline gPxvvwdrTY6FbTx3mvl1" viewBox="0 0 16 16"
-                            style="--encore-icon-height: var(--encore-graphic-size-decorative-smaller); --encore-icon-width: var(--encore-graphic-size-decorative-smaller);">
-                            <path
-                                d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z">
-                            </path>
-                        </svg>
-                        <span class="e-9812-text encore-text-body-small-bold encore-internal-color-text-base"
-                            data-encore-id="text">Crear</span>
-                    </button>
-                    <div class="icons">
-                        <i class="fa-solid fa-arrow-right pointer transition hover hide"></i>
-                    </div>
-                </div>
-
-                <div class="lib-boxes hide">
-                    <!-- <div class="box">
-                        <p class="box-p1 pointer">Create your first playlist</p>
-                        <p class="box-p2 pointer">It's easy, we'll help you</p>
-                        <button class="badge scale transition pointer">Create playlist</button>
-                    </div>
-
-                    <div class="box">
-                        <p class="box-p1 pointer">Let's find some podcasts to follow</p>
-                        <p class="box-p2 pointer">We'll keep you updated on new episodes</p>
-                        <button class="badge scale transition pointer">Browse podcasts</button>
-                    </div> -->
-                </div>
-            </div>
+          <span class="current-time total-time hide2">4:09</span>
         </div>
+      </div>
 
-        <div class="main-content">
-            <div class="emb content" hidden>
-                <iframe title="Spotify Embed: Recommendation Playlist "
-                    src="https://open.spotify.com/embed/playlist/3ti4WrByIYHh1spqJDrzX4?utm_source=generator&theme=0"
-                    width="100%" height="100%" style="min-height: 100vh;" frameBorder="0"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"></iframe>
-            </div>
-            <div class="sticky-nav-pro">
-                <div class="sticky-nav-boottom">
-                    <button class="badge all pointer">Todo</button>
-                    <button class="badge badge3 transition pointer">Música</button>
-                    <button class="badge badge3 transition pointer">Podcasts</button>
-                </div>
-            </div>
-
-            <h2 class="card-heading center">Recently Played</h2>
-            <div class="cards-container">
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/recent.png" alt="card image">
-                    <p class="card-title">Blinding Lights</p>
-                    <p class="card-info">The Weeknd</p>
-                </div>
-            </div>
-
-            <h2 class="card-heading">Featured Charts</h2>
-            <div class="cards-container">
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/card5img.jpeg" alt="card image">
-                    <p class="card-title">Top Songs - Global</p>
-                    <p class="card-info">Your weekly update of the most played trac...</p>
-                </div>
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/card6img.jpeg" alt="card image">
-                    <p class="card-title">Top Songs - India</p>
-                    <p class="card-info">Your weekly update of the most played trac...</p>
-                </div>
-            </div>
-
-            <h2 class="card-heading center">To get you started</h2>
-            <div class="cards-container">
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/getStart.jpeg" alt="card image">
-                    <p class="card-title">David Kushner Mik</p>
-                    <p class="card-info">Chance Pena, Tom Odell and Tom...</p>
-                </div>
-            </div>
-
-            <h2 class="card-heading">Trending now near you</h2>
-            <div class="cards-container">
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/card1img.jpeg" alt="card image">
-                    <p class="card-title">Top 50 - Global</p>
-                    <p class="card-info">Your daily update of the most played...</p>
-                </div>
-                <div class="card pointer">
-                    <div class="play">
-                        <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="card-img" src="./assets/top50Ind.png" alt="card image">
-                    <p class="card-title">Top 50 - India</p>
-                    <p class="card-info">Your daily update of the most played...</p>
-                </div>
-            </div>
-
-            <h2 class="card-heading">Spotify original podcasts</h2>
-            <div class="cards-container">
-                <div class="card pointer">
-                    <img class="card-img" src="./assets/podcast1.png" alt="card image">
-                    <p class="card-title">The Ranveer Show</p>
-                    <p class="card-info">BeerBiceps</p>
-                </div>
-                <div class="card pointer">
-                    <img class="card-img" src="./assets/podcast4.png" alt="card image">
-                    <p class="card-title">Aa Modati Alajadi...</p>
-                    <p class="card-info">Spotify Studios</p>
-                </div>
-                <div class="card pointer">
-                    <img class="card-img" src="./assets/podcast2.png" alt="card image">
-                    <p class="card-title">The Horror Show...</p>
-                    <p class="card-info">TMV Studios</p>
-                </div>
-            </div>
-
-            <footer class="footer">
-            </footer>
+      <div class="hw-controls hide2">
+        <img src="./assets/controls_icon1.png" alt="control1" class="control1 pointer cursor time">
+        <img src="./assets/controld_icon2.png" alt="control2" class="control2 pointer cursor time">
+        <img src="./assets/controls_icon3.png" alt="control3" class="control3 pointer cursor time">
+        <img src="./assets/controls_icon4.png" alt="control5" class="control4 pointer cursor time">
+        <img src="./assets/controls_icon5.png" alt="control5" class="control5 pointer cursor time">
+        <input type="range" name="" id="" class="volume pointer">
+        <img src="./assets/album_icon2.png" alt="control6" class="control6 pointer">
+        <div class="full-screen pointer">
+          <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
         </div>
-
-        <div class="music-player">
-
-            <div class="album">
-                <div class="album2">
-                    <img class="album-img pointer" src="./assets/small.png" alt="album">
-                    <div class="description">
-                        <p class="description1 pointer">Blinding Lights</p>
-                        <p class="description2 pointer cursor time hide2">The Weeknd</p>
-                    </div>
-                    <div class="plush pointer cursor time hide2">
-                        <i class="fa-solid fa-plus plush-icon"></i>
-                    </div>
-                </div>
-                <i class="fa-solid fa-play pause2 hide hide3"></i>
-            </div>
-
-            <div class="player">
-                <div class="controls">
-                    <img class="pointer hide2" src="./assets/player_icon1.png" alt="suffle">
-                    <img class="pointer hide2" src="./assets/player_icon2.png" alt="backward">
-                    <img class="pause pointer scale hide2" src="./assets/player_icon3.png" alt="play">
-                    <img class="pointer hide2" src="./assets/player_icon4.png" alt="forward">
-                    <img class="loop pointer hide2" src="./assets/player_icon5.png" alt="loop">
-                </div>
-
-                <div class="progress-bar">
-                    <span class="current-time hide2">0:00</span>
-                    <input type="range" name="" class="play-bar pointer" min="0" max="100">
-                    <!-- <div class="ProgressBar_progressBarContainer__glVHh"><label
-                            class="ScreenReaderInput_visibleOnlyToScreenReader__TVvYo">Cambiar punto de la canción<input
-                                min="0" max="165718" step="5000" aria-valuetext="
-                        00:18 /
-                        02:45
-                       " type="range" value="18611"></label>
-                        <div class="ProgressBar_progressBarLineBackground__S9lxG">
-                            <div class="ProgressBar_progressBarLineActive__eawR7" style="transform: translateX(-100%);">
-                            </div>
-                            <div data-testid="progress-bar-line" id="progress-bar-line"
-                                class="ProgressBar_progressBarLine__a7FZb" style="transform: translateX(-88.7695%);">
-                            </div>
-                        </div>
-                        <div data-testid="progress-bar-slider" id="progress-bar-slider"
-                            class="ProgressBar_progressBarSlider__oFBQJ" style="left: 11.2305%;"></div>
-                    </div> -->
-                    <span class="current-time total-time hide2">4:09</span>
-                </div>
-            </div>
-
-            <div class="hw-controls hide2">
-                <img src="./assets/controls_icon1.png" alt="control1" class="control1 pointer cursor time">
-                <img src="./assets/controld_icon2.png" alt="control2" class="control2 pointer cursor time">
-                <img src="./assets/controls_icon3.png" alt="control3" class="control3 pointer cursor time">
-                <img src="./assets/controls_icon4.png" alt="control5" class="control4 pointer cursor time">
-                <img src="./assets/controls_icon5.png" alt="control5" class="control5 pointer cursor time">
-                <input type="range" name="" id="" class="volume pointer">
-                <img src="./assets/album_icon2.png" alt="control6" class="control6 pointer">
-                <div class="full-screen pointer">
-                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-                </div>
-            </div>
-
-        </div>
+      </div>
 
     </div>
 
-    <script src="js/app.js"  type="module"></script>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
 </body>
 
 </html>

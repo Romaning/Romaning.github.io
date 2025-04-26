@@ -9,7 +9,7 @@
 
 // #region VARIABLES DE ENTORNO
 // your clientId
-const clientId = 'e2f650471db0457a962a675206842bb1'; 
+const clientId = 'e2f650471db0457a962a675206842bb1';
 // your redirect URL - must be localhost URL and/or HTTPS
 const redirectUrl = 'https://romaning.github.io';
 
@@ -18,7 +18,7 @@ const tokenEndpoint = "https://accounts.spotify.com/api/token";
 const apiEndpoint = "https://api.spotify.com";
 //const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private ugc-image-upload';
 //const scope = 'ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-follow-modify user-follow-read user-read-playback-position user-read-recently-played user-library-modify user-library-read user-read-email user-read-private user-soa-link user-soa-unlink soa-manage-entitlements soa-manage-partner soa-create-partner'
-const scope = 'user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read streaming user-read-email user-read-private playlist-modify-public playlist-modify-private user-read-recently-played user-library-modify user-library-read' 
+const scope = 'user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read streaming user-read-email user-read-private playlist-modify-public playlist-modify-private user-read-recently-played user-library-modify user-library-read'
 //#endregion 
 
 //#region ENTITIES (Getters y Setters) y DATABASES
@@ -34,20 +34,20 @@ const currentToken = {
 
   // Funciones GETTERS
   // estos son los getters, se usanar despues de haber seteado
-  get access_token() { 
-    return localStorage.getItem('access_token') || null; 
+  get access_token() {
+    return localStorage.getItem('access_token') || null;
   },
 
-  get refresh_token() { 
-    return localStorage.getItem('refresh_token') || null; 
+  get refresh_token() {
+    return localStorage.getItem('refresh_token') || null;
   },
 
-  get expires_in() { 
-    return localStorage.getItem('refresh_in') || null 
+  get expires_in() {
+    return localStorage.getItem('refresh_in') || null
   },
 
-  get expires() { 
-    return localStorage.getItem('expires') || null 
+  get expires() {
+    return localStorage.getItem('expires') || null
   },
 
   // Metodos SETTERS
@@ -125,7 +125,7 @@ async function fetchWebApi(endpoint, method, body) {
   const response = await fetch(`${apiEndpoint}/${endpoint}`, {
     method: method,
     headers: {
-      'Authorization': 'Bearer ' + currentToken.access_token 
+      'Authorization': 'Bearer ' + currentToken.access_token
     },
     body: JSON.stringify(body)
     //body: JSON.stringify(body)
@@ -136,7 +136,7 @@ async function fetchWebApi(endpoint, method, body) {
   return await response.json();
 }
 //#endregion
-              
+
 //#region VIEWS
 /* 
   Representacion de plantillas HTML con enlace de datos básico (solo software de demostracion).
@@ -158,7 +158,7 @@ function renderTemplate(targetId /* a donde se renderiza */, templateId /* que p
   // Seleccionamos todos los elementos dentro de la plantilla que vamos a mostrar dentro de main o oauth
   const elements = clone.querySelectorAll("*");
   elements.forEach(ele => {
-    
+
     // Tomamos todo aquello que tenga data-bind como propiedad como si fuese un ng-model
     const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
 
@@ -237,29 +237,29 @@ async function refreshTokenClick() {
 }
 
 // funcion para obtener las 5 mas escuchadas
-async function getTopTracks(){
+async function getTopTracks() {
   return (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;
 }
 
-async function getTracksClick(){
+async function getTracksClick() {
   const topTracks = await getTopTracks();
   console.log(
     topTracks?.map(
-      ({name, artists}) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
+      ({ name, artists }) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
     )
   );
 }
 
 // Funcion Guardar las N canciones seleccionadas a un playlist llamado "My Top tracks playlist"
-async function createPlaylist(tracksUri){
+async function createPlaylist(tracksUri) {
 
   // Obtengo mi ID de usuario
   const { id: user_id } = await fetchWebApi('v1/me', 'GET')
 
   // Crear una playlist
   const playlist = await fetchWebApi(
-    `v1/users/${user_id}/playlists`, 
-    'POST', 
+    `v1/users/${user_id}/playlists`,
+    'POST',
     {
       "name": "Las cinco mas escucadas",
       "description": "Playlist creada desde la pagina de desarrollo",
@@ -276,10 +276,10 @@ async function createPlaylist(tracksUri){
   return playlist;
 }
 
-async function createPlaylistAndAddTracksClick(){
+async function createPlaylistAndAddTracksClick() {
   // lsita de cnaciones seleccionadas para guardar
   const tracksUri = [
-    'spotify:track:3qQbCzHBycnDpGskqOWY0E','spotify:track:6otePxalBK8AVa20xhZYVQ','spotify:track:3nc420PXjTdBV5TN0gCFkS','spotify:track:4jp4Z02kzzg8gK0NmDGgml','spotify:track:5a1Cm3iYkS0nWn9fTijOq4'
+    'spotify:track:3qQbCzHBycnDpGskqOWY0E', 'spotify:track:6otePxalBK8AVa20xhZYVQ', 'spotify:track:3nc420PXjTdBV5TN0gCFkS', 'spotify:track:4jp4Z02kzzg8gK0NmDGgml', 'spotify:track:5a1Cm3iYkS0nWn9fTijOq4'
   ];
 
   const createdPlaylist = await createPlaylist(tracksUri);
@@ -322,6 +322,8 @@ if (code) {
 // Si tenemos un token, si estamos LOGEADOS, entonces mostramos la pagina de logeado, MOSTRANDO todos los DATOS DEL USUARIO
 if (currentToken.access_token) {
   const userData = await getUserData();
+  //solo en un lugar sucede esto
+  renderTemplate("slot-user-img", "user-loged-img", userData);
   renderTemplate("main", "logged-in-template", userData);
   renderTemplate("oauth", "oauth-template", currentToken);
 }
@@ -329,6 +331,6 @@ if (currentToken.access_token) {
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.
 // Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login
 if (!currentToken.access_token) {
-  renderTemplate("main", "login");
+  renderTemplate("slot-user-img", "login");
 }
 //#endregion

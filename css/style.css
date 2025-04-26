@@ -18,6 +18,10 @@ body {
     height: 100vh;
 }
 
+button{
+    color: #0c0a0a;
+}
+
 ::-webkit-scrollbar {
     width: 0.7rem;
 }
@@ -120,6 +124,7 @@ body {
     margin-top: 0.6rem;
 }
 
+/* el usuario */
 .user {
     height: 2.2rem;
     width: 2.2rem;
@@ -223,10 +228,7 @@ a {
     font-weight: 400;
     opacity: 0.9;
 } */
- button{
-    color: #b3b3b3;
- }
- 
+
 .button-crear {
     /* display: -webkit-box;
     display: -ms-flexbox; */
