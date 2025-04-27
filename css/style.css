@@ -159,6 +159,12 @@ a {
     display: flex;
 }
 
+.center-part .btn-home{
+    color: #fff;
+    background-color: #232323;
+    border: 0;
+}
+
 /* lado derecho */
 .margin {
     margin-left: 0.5rem;

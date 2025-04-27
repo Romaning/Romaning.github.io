@@ -805,7 +805,10 @@ async function showPlayLists() {
     });
 }
 
-
+function showCategories(){
+    const viewCategories = document.querySelector('.view-categories');
+    viewCategories.hidden = false;
+}
 //#endregion
 
 //#region MAIN
