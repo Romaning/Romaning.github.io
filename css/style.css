@@ -440,6 +440,14 @@ a {
 
 /* ######################################### tres botones todo, musica y podcasts######################################### */
 
+.iframe-iframe .encore-dark-theme, .encore-dark-theme .encore-base-set {
+    background-color: #1fdf64 !important;
+    --background-base: #6b1f1f !important;
+    --background-highlight: #9d2828 !important;
+    --background-press: #751616 !important;
+    --background-elevated-base: #1f1f1f !important;
+}
+
 /* ######################################### CONTENIDO ######################################### */
 /*  SECCION MAIN O PRINCIPAL */
 .main-content {
@@ -469,17 +477,18 @@ a {
 #slot-categories-user {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(162px, 1fr));
-    /*gap: clamp(1rem, 2vw, 1.5rem); *//* Espaciado fluido */
+    gap: 0.5rem;
+    /*gap: clamp(0rem, 0vw, 0rem);*/ /* Espaciado fluido */
 }
 
 .card {
     width: 162px;
     height: fit-content;
     border-radius: 0.5rem;
-    padding: 0.85rem;
     transition: all 0.4s;
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
+    padding: 0.75rem;
 }
 
 /* main > circulito verde para el card cuando se hace hover */
@@ -764,7 +773,7 @@ a {
     }
 
     .cards-container {
-        overflow-x: auto;
+        /*overflow-x: auto;*/
         flex-wrap: nowrap;
     }
 
@@ -947,5 +956,15 @@ a {
 
         --elmements-wh-bk-color: #a4a3a3;
         --elements-bk-wh-color: #8a8a8a;
+    }
+
+    .cards-container:hover {
+        color: #ffffff;
+    }
+    .card-playlist img{
+        padding-top: 5px;
+    }
+    .card-playlist:hover{
+        color: #ffffff;
     }
 }

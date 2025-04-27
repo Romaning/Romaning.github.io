@@ -294,7 +294,7 @@ async function createPlaylistAndAddTracksClick() {
 }
 
 async function showTracksPlayList(id) {
-    console.log("entra" + id)
+    /*console.log("entra" + id)*/
     const tracks = await fetchWebApi(
         `v1/playlists/${id}`,
         'GET'
@@ -752,8 +752,6 @@ const datosia = {
     ]
 }
 
-/*showPlayLists();*/
-/*showPlayLists()*/
 async function showPlayLists() {
     const playlists = await getPlayListsUser();
     /*const playlists = datosia;*/
@@ -813,6 +811,7 @@ async function getCategoriesUser() {
 
     return Categories;
 }
+
 const catia = {
     "categories": {
         "href": "https://api.spotify.com/v1/browse/categories?offset=0&limit=20&locale=es-419,es;q%3D0.9,en;q%3D0.8",
@@ -1065,7 +1064,9 @@ const catia = {
         "total": 54
     }
 };
-/*showCategories();*/
+
+/*showCategories();
+showPlayLists()*/
 
 async function showCategories() {
     const categories = await getCategoriesUser();
@@ -1121,24 +1122,24 @@ const code = args.get('code');
 // Si encuentro el code con contenido entonces
 console.log(code)
 if (code) {
-    console.log("Ingresa a otbtener token");
+    /*console.log("Ingresa a otbtener token");*/
     const token = await getToken(code);
-    console.log(token);
-    console.log("Guardamos el token en el local storage");
+    /*console.log(token);
+    console.log("Guardamos el token en el local storage");*/
     currentToken.save(token);
 
     // Eliminar el código de la URL para que podamos actualizar correctamente.
     // Eliminar el code desde el URL para que nosotros podamos refrescar correcatmente
-    console.log("Obtenemos el href de windows");
+    /*console.log("Obtenemos el href de windows");*/
     const url = new URL(window.location.href);
-    console.log(url);
-    console.log("eliminamos code del url");
+    /*console.log(url);
+    console.log("eliminamos code del url");*/
     url.searchParams.delete("code");
-    console.log(url);
+    /*console.log(url);
 
-    console.log("buscamos reemplazar algo");
+    console.log("buscamos reemplazar algo");*/
     const updatedUrl = url.search ? url.href : url.href.replace('?', '');
-    console.log(updatedUrl);
+    /*console.log(updatedUrl);*/
     window.history.replaceState({}, document.title, updatedUrl);
 }
 
