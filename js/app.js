@@ -766,6 +766,7 @@ async function showPlayLists() {
         /*playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
+        playList.addEventListener('click', showTracksPlayList(item.id));
         /*playList.classList.add('card');*/
 
         let imagenUrl = ""
