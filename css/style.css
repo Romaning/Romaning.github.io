@@ -110,7 +110,7 @@ button {
     margin-right: 0.5rem;
 }
 
-.left-part .logo-text{
+.left-part .logo-text {
     font-weight: bold;
 }
 
@@ -148,6 +148,11 @@ button {
 
 .user img {
     height: 1.6rem;
+}
+
+.slot-user-img {
+    display: flex;
+    gap: 0.5rem;
 }
 
 /* ######################################### Side bar ######################################### */
@@ -260,7 +265,7 @@ a {
     opacity: 0.9;
 } */
 
-.library-options-right{
+.library-options-right {
     display: flex;
     gap: 0.5rem;
 }
@@ -399,12 +404,14 @@ a {
     opacity: 0.6;
     margin: 0.5rem 0 0.3rem 0;
 }
+
 /* ######################################### FOOTER MUSIC PLAYER ######################################### */
-.aside{
+.aside {
     width: 428px;
     background-color: #d32626;
     border-radius: 0.5rem;
 }
+
 /* ######################################### FOOTER MUSIC PLAYER ######################################### */
 .music-player {
     background-color: #000;
