@@ -6,7 +6,7 @@
  * For more information, read
  * https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
  */
-
+var imgLike = 'https://misc.scdn.co/liked-songs/liked-songs-300.jpg'
 // #region VARIABLES DE ENTORNO
 // your clientId
 const clientId = 'e2f650471db0457a962a675206842bb1';
@@ -309,6 +309,11 @@ async function showTracksPlayList(id) {
     );
     const div = document.querySelector('.emb.content');
     div.removeAttribute('hidden');
+
+    const iframe = document.querySelector('.iframe-iframe');
+    iframe.setAttribute('src', 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator&theme=0');
+    const viewCategories = document.querySelector('.view-categories');
+    viewCategories.hidden = true;
     console.log(tracks)
 }
 
@@ -766,12 +771,16 @@ async function showPlayLists() {
         /*playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
-        playList.addEventListener('click', () => {showTracksPlayList(item.id)});
+        playList.addEventListener('click', () => {
+            showTracksPlayList(item.id)
+        });
         /*playList.classList.add('card');*/
 
         let imagenUrl = ""
-        if(item.images != null){
+        if (item.images != null) {
             imagenUrl = item?.images[0]?.url;
+        } else {
+            imagenUrl = imgLike;
         }
         playList.innerHTML = `
         <div class="play-list">
