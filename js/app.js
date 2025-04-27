@@ -1,6 +1,6 @@
 /**
  * This is an example of a basic node.js script that performs
- * the Authorization Code with PKCE oAuth2 flow to authenticate 
+ * the Authorization Code with PKCE oAuth2 flow to authenticate
  * against the Spotify Accounts.
  *
  * For more information, read
@@ -29,39 +29,39 @@ const scope = 'user-read-playback-state user-modify-playback-state user-read-cur
 // Estructura de datos que administra el token activo actual y lo almacena en cache en localStorage
 const currentToken = {
 
-  // aqui falta el cnstructor pero eso se lo dejamos a las clases de verdad
-  // aqui faltan los atributos que deben ser privados, pero eso tambien lo dejamos a las clases por el momento
+    // aqui falta el cnstructor pero eso se lo dejamos a las clases de verdad
+    // aqui faltan los atributos que deben ser privados, pero eso tambien lo dejamos a las clases por el momento
 
-  // Funciones GETTERS
-  // estos son los getters, se usanar despues de haber seteado
-  get access_token() {
-    return localStorage.getItem('access_token') || null;
-  },
+    // Funciones GETTERS
+    // estos son los getters, se usanar despues de haber seteado
+    get access_token() {
+        return localStorage.getItem('access_token') || null;
+    },
 
-  get refresh_token() {
-    return localStorage.getItem('refresh_token') || null;
-  },
+    get refresh_token() {
+        return localStorage.getItem('refresh_token') || null;
+    },
 
-  get expires_in() {
-    return localStorage.getItem('refresh_in') || null
-  },
+    get expires_in() {
+        return localStorage.getItem('refresh_in') || null
+    },
 
-  get expires() {
-    return localStorage.getItem('expires') || null
-  },
+    get expires() {
+        return localStorage.getItem('expires') || null
+    },
 
-  // Metodos SETTERS
-  // Estos son los setters, se usa antes para guardar y luego se recuperar con los getters
-  save: function (response) {
-    const { access_token, refresh_token, expires_in } = response;
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    localStorage.setItem('expires_in', expires_in);
+    // Metodos SETTERS
+    // Estos son los setters, se usa antes para guardar y luego se recuperar con los getters
+    save: function (response) {
+        const {access_token, refresh_token, expires_in} = response;
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('refresh_token', refresh_token);
+        localStorage.setItem('expires_in', expires_in);
 
-    const now = new Date();
-    const expiry = new Date(now.getTime() + (expires_in * 1000));
-    localStorage.setItem('expires', expiry);
-  }
+        const now = new Date();
+        const expiry = new Date(now.getTime() + (expires_in * 1000));
+        localStorage.setItem('expires', expiry);
+    }
 };
 //#endregion
 
@@ -69,50 +69,50 @@ const currentToken = {
 //#region SERVICES - Llamada a las APIs de Spotify
 // Servicio para obtener un token
 async function getToken(code) {
-  const code_verifier = localStorage.getItem('code_verifier');
+    const code_verifier = localStorage.getItem('code_verifier');
 
-  const response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      client_id: clientId,
-      grant_type: 'authorization_code',
-      code: code,
-      redirect_uri: redirectUrl,
-      code_verifier: code_verifier,
-    }),
-  });
+    const response = await fetch(tokenEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: redirectUrl,
+            code_verifier: code_verifier,
+        }),
+    });
 
-  return await response.json();
+    return await response.json();
 }
 
 // El servicio que solicita al end point para pedir un nuevo toke a partir de la anterior
 async function refreshToken() {
-  const response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({
-      client_id: clientId,
-      grant_type: 'refresh_token',
-      refresh_token: currentToken.refresh_token
-    }),
-  });
+    const response = await fetch(tokenEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'refresh_token',
+            refresh_token: currentToken.refresh_token
+        }),
+    });
 
-  return await response.json();
+    return await response.json();
 }
 
 // El servicio para obtener los datos del usuario
 async function getUserData() {
-  const response = await fetch(`${apiEndpoint}/v1/me`, {
-    method: 'GET',
-    headers: { 'Authorization': 'Bearer ' + currentToken.access_token },
-  });
+    const response = await fetch(`${apiEndpoint}/v1/me`, {
+        method: 'GET',
+        headers: {'Authorization': 'Bearer ' + currentToken.access_token},
+    });
 
-  return await response.json();
+    return await response.json();
 }
 
 /* 
@@ -122,19 +122,20 @@ async function getUserData() {
    - Crear playlist y agregarlo (endpoint y body)
 */
 async function fetchWebApi(endpoint, method, body) {
-  const response = await fetch(`${apiEndpoint}/${endpoint}`, {
-    method: method,
-    headers: {
-      'Authorization': 'Bearer ' + currentToken.access_token
-    },
-    body: JSON.stringify(body)
-    //body: JSON.stringify(body)
-    // body: new URLSearchParams({
-    //   client_id: clientId,
-    // }),
-  });
-  return await response.json();
+    const response = await fetch(`${apiEndpoint}/${endpoint}`, {
+        method: method,
+        headers: {
+            'Authorization': 'Bearer ' + currentToken.access_token
+        },
+        body: JSON.stringify(body)
+        //body: JSON.stringify(body)
+        // body: new URLSearchParams({
+        //   client_id: clientId,
+        // }),
+    });
+    return await response.json();
 }
+
 //#endregion
 
 //#region VIEWS
@@ -153,148 +154,636 @@ async function fetchWebApi(endpoint, method, body) {
   renderTemplate("main", "login");
 */
 function renderTemplate(targetId /* a donde se renderiza */, templateId /* que plantilla agarraremos para visualizar */, data = null) {
-  const template = document.getElementById(templateId);
-  const clone = template.content.cloneNode(true);
-  // Seleccionamos todos los elementos dentro de la plantilla que vamos a mostrar dentro de main o oauth
-  const elements = clone.querySelectorAll("*");
-  elements.forEach(ele => {
+    const template = document.getElementById(templateId);
+    const clone = template.content.cloneNode(true);
+    // Seleccionamos todos los elementos dentro de la plantilla que vamos a mostrar dentro de main o oauth
+    const elements = clone.querySelectorAll("*");
+    elements.forEach(ele => {
 
-    // Tomamos todo aquello que tenga data-bind como propiedad como si fuese un ng-model
-    const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
+        // Tomamos todo aquello que tenga data-bind como propiedad como si fuese un ng-model
+        const bindingAttrs = [...ele.attributes].filter(a => a.name.startsWith("data-bind"));
 
-    // Recorremos cada elemento
-    bindingAttrs.forEach(attr => {
-      const target = attr.name.replace(/data-bind-/, "").replace(/data-bind/, "");
-      const targetType = target.startsWith("onclick") ? "HANDLER" : "PROPERTY";
-      const targetProp = target === "" ? "innerHTML" : target;
+        // Recorremos cada elemento
+        bindingAttrs.forEach(attr => {
+            const target = attr.name.replace(/data-bind-/, "").replace(/data-bind/, "");
+            const targetType = target.startsWith("onclick") ? "HANDLER" : "PROPERTY";
+            const targetProp = target === "" ? "innerHTML" : target;
 
-      const prefix = targetType === "PROPERTY" ? "data." : "";
-      const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
+            const prefix = targetType === "PROPERTY" ? "data." : "";
+            const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
 
-      // quiza seria mejor utilizar un framework para validaciones aqui (documentacion)
-      try {
-        ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => { eval(expression) };
-        ele.removeAttribute(attr.name);
-      } catch (ex) {
-        console.error(`Error binding ${expression} to ${targetProp}`, ex);
-      }
+            // quiza seria mejor utilizar un framework para validaciones aqui (documentacion)
+            try {
+                ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => {
+                    eval(expression)
+                };
+                ele.removeAttribute(attr.name);
+            } catch (ex) {
+                console.error(`Error binding ${expression} to ${targetProp}`, ex);
+            }
+        });
     });
-  });
 
-  const target = document.getElementById(targetId);
-  target.innerHTML = "";
-  target.appendChild(clone);
+    const target = document.getElementById(targetId);
+    target.innerHTML = "";
+    target.appendChild(clone);
 }
 
 //#region like CONTROLLER
 async function redirectToSpotifyAuthorize() {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const randomValues = crypto.getRandomValues(new Uint8Array(64));
-  const randomString = randomValues.reduce((acc, x) => acc + possible[x % possible.length], "");
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const randomValues = crypto.getRandomValues(new Uint8Array(64));
+    const randomString = randomValues.reduce((acc, x) => acc + possible[x % possible.length], "");
 
-  const code_verifier = randomString;
-  const data = new TextEncoder().encode(code_verifier);
-  const hashed = await crypto.subtle.digest('SHA-256', data);
+    const code_verifier = randomString;
+    const data = new TextEncoder().encode(code_verifier);
+    const hashed = await crypto.subtle.digest('SHA-256', data);
 
-  const code_challenge_base64 = btoa(String.fromCharCode(...new Uint8Array(hashed)))
-    .replace(/=/g, '')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_');
+    const code_challenge_base64 = btoa(String.fromCharCode(...new Uint8Array(hashed)))
+        .replace(/=/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
 
-  window.localStorage.setItem('code_verifier', code_verifier);
+    window.localStorage.setItem('code_verifier', code_verifier);
 
-  const authUrl = new URL(authorizationEndpoint)
-  const params = {
-    response_type: 'code',
-    client_id: clientId,
-    scope: scope,
-    code_challenge_method: 'S256',
-    code_challenge: code_challenge_base64,
-    redirect_uri: redirectUrl,
-  };
+    const authUrl = new URL(authorizationEndpoint)
+    const params = {
+        response_type: 'code',
+        client_id: clientId,
+        scope: scope,
+        code_challenge_method: 'S256',
+        code_challenge: code_challenge_base64,
+        redirect_uri: redirectUrl,
+    };
 
-  authUrl.search = new URLSearchParams(params).toString();
-  // Redireccionar al usuario al login para autenticarse con el servidor
-  // Redirigir al usuario al servidor de autorización para iniciar sesion
-  window.location.href = authUrl.toString();
+    authUrl.search = new URLSearchParams(params).toString();
+    // Redireccionar al usuario al login para autenticarse con el servidor
+    // Redirigir al usuario al servidor de autorización para iniciar sesion
+    window.location.href = authUrl.toString();
 }
 
 // 1. Función declarativa
 // Se activan como controladores, realizan algo o escriben en la BD directamente, obtienen token, permite la salida del sistema
 async function loginWithSpotifyClick() {
-  await redirectToSpotifyAuthorize();
+    await redirectToSpotifyAuthorize();
 }
 
 // 2. Función expresiva
 let logoutClick = async function () {
-  localStorage.clear();
-  window.location.href = redirectUrl;
+    localStorage.clear();
+    window.location.href = redirectUrl;
 }
 
 // 1. Función declarativa
 // Aqui tenemos la funcion de RENOVAR EL TOKEN
 async function refreshTokenClick() {
-  const token = await refreshToken();
-  currentToken.save(token);
-  renderTemplate("oauth", "oauth-template", currentToken);
+    const token = await refreshToken();
+    currentToken.save(token);
+    renderTemplate("oauth", "oauth-template", currentToken);
 }
 
 // funcion para obtener las 5 mas escuchadas
-let getTopTracks = async () => { (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;}
+let getTopTracks = async () => {
+    (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;
+}
 
 async function getTracksClick() {
-  const topTracks = await getTopTracks();
-  console.log(
-    topTracks?.map(
-      ({ name, artists }) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
-    )
-  );
+    const topTracks = await getTopTracks();
+    console.log(
+        topTracks?.map(
+            ({name, artists}) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
+        )
+    );
 }
 
 // Funcion Guardar las N canciones seleccionadas a un playlist llamado "My Top tracks playlist"
 async function createPlaylist(tracksUri) {
 
-  // Obtengo mi ID de usuario
-  const { id: user_id } = await fetchWebApi('v1/me', 'GET')
+    // Obtengo mi ID de usuario
+    const {id: user_id} = await fetchWebApi('v1/me', 'GET')
 
-  // Crear una playlist
-  const playlist = await fetchWebApi(
-    `v1/users/${user_id}/playlists`,
-    'POST',
-    {
-      "name": "Las cinco mas escucadas",
-      "description": "Playlist creada desde la pagina de desarrollo",
-      "public": false
-    }
-  )
+    // Crear una playlist
+    const playlist = await fetchWebApi(
+        `v1/users/${user_id}/playlists`,
+        'POST',
+        {
+            "name": "Las cinco mas escucadas",
+            "description": "Playlist creada desde la pagina de desarrollo",
+            "public": false
+        }
+    )
 
-  // Agregar las canciones seleccionadas en la playlist creada
-  await fetchWebApi(
-    `v1/playlists/${playlist.id}/tracks?uris=${tracksUri.join(',')}`,
-    'POST'
-  );
+    // Agregar las canciones seleccionadas en la playlist creada
+    await fetchWebApi(
+        `v1/playlists/${playlist.id}/tracks?uris=${tracksUri.join(',')}`,
+        'POST'
+    );
 
-  return playlist;
+    return playlist;
 }
 
 async function createPlaylistAndAddTracksClick() {
-  // lsita de cnaciones seleccionadas para guardar
-  const tracksUri = [
-    'spotify:track:3qQbCzHBycnDpGskqOWY0E', 'spotify:track:6otePxalBK8AVa20xhZYVQ', 'spotify:track:3nc420PXjTdBV5TN0gCFkS', 'spotify:track:4jp4Z02kzzg8gK0NmDGgml', 'spotify:track:5a1Cm3iYkS0nWn9fTijOq4'
-  ];
+    // lsita de cnaciones seleccionadas para guardar
+    const tracksUri = [
+        'spotify:track:3qQbCzHBycnDpGskqOWY0E', 'spotify:track:6otePxalBK8AVa20xhZYVQ', 'spotify:track:3nc420PXjTdBV5TN0gCFkS', 'spotify:track:4jp4Z02kzzg8gK0NmDGgml', 'spotify:track:5a1Cm3iYkS0nWn9fTijOq4'
+    ];
 
-  const createdPlaylist = await createPlaylist(tracksUri);
-  console.log(createdPlaylist.name, createdPlaylist.id);
+    const createdPlaylist = await createPlaylist(tracksUri);
+    console.log(createdPlaylist.name, createdPlaylist.id);
 }
 
-async function getPlayListsUser(){
-  const Playlists = await fetchWebApi(
-      `v1/me/playlists?limit=50`,
-      'GET'
-  );
+async function getPlayListsUser() {
+    const Playlists = await fetchWebApi(
+        `v1/me/playlists?limit=50`,
+        'GET'
+    );
 
-  return Playlists;
+    return Playlists;
 }
+
+const datosia = {
+    "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq/playlists?offset=0&limit=50&locale=es-419,es;q%3D0.9,en;q%3D0.8",
+    "limit": 50,
+    "next": null,
+    "offset": 0,
+    "previous": null,
+    "total": 10,
+    "items": [
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/4WGMv9kdvbxG3fvPUxeMv5"
+            },
+            "href": "https://api.spotify.com/v1/playlists/4WGMv9kdvbxG3fvPUxeMv5",
+            "id": "4WGMv9kdvbxG3fvPUxeMv5",
+            "images": [
+                {
+                    "height": null,
+                    "url": "https://i.scdn.co/image/ab67616d00001e02755a9f1e89ad8e8cf91d4956",
+                    "width": null
+                }
+            ],
+            "name": "Timabaland",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAAAzsCHLud3WN0gfCKknrsvh+gUbik",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/4WGMv9kdvbxG3fvPUxeMv5/tracks",
+                "total": 1
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:4WGMv9kdvbxG3fvPUxeMv5"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/6s1hVwZ0SwNydt8ZrXior5"
+            },
+            "href": "https://api.spotify.com/v1/playlists/6s1hVwZ0SwNydt8ZrXior5",
+            "id": "6s1hVwZ0SwNydt8ZrXior5",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e020f63311a0099522a191314b6ab67616d00001e021917a0f3f4152622a040913fab67616d00001e025409d6da4f0a9aa86edd4ef4ab67616d00001e02b5d4b4ed17ec86c4b3944af2",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e020f63311a0099522a191314b6ab67616d00001e021917a0f3f4152622a040913fab67616d00001e025409d6da4f0a9aa86edd4ef4ab67616d00001e02b5d4b4ed17ec86c4b3944af2",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e020f63311a0099522a191314b6ab67616d00001e021917a0f3f4152622a040913fab67616d00001e025409d6da4f0a9aa86edd4ef4ab67616d00001e02b5d4b4ed17ec86c4b3944af2",
+                    "width": 60
+                }
+            ],
+            "name": "Descubriendo",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAABeuYR7IMsXC2kknO+1muMwzAO624",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/6s1hVwZ0SwNydt8ZrXior5/tracks",
+                "total": 4
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:6s1hVwZ0SwNydt8ZrXior5"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/08dWJ0fEK7gFz5nN3aFlnt"
+            },
+            "href": "https://api.spotify.com/v1/playlists/08dWJ0fEK7gFz5nN3aFlnt",
+            "id": "08dWJ0fEK7gFz5nN3aFlnt",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e023298b9f621f76cff99aa3f21ab67616d00001e02886da61fb5e8af44fbe1761fab67616d00001e02ad5b2167b8853c1a9d25c97bab67616d00001e02e00782865bf36a54ac28f225",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e023298b9f621f76cff99aa3f21ab67616d00001e02886da61fb5e8af44fbe1761fab67616d00001e02ad5b2167b8853c1a9d25c97bab67616d00001e02e00782865bf36a54ac28f225",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e023298b9f621f76cff99aa3f21ab67616d00001e02886da61fb5e8af44fbe1761fab67616d00001e02ad5b2167b8853c1a9d25c97bab67616d00001e02e00782865bf36a54ac28f225",
+                    "width": 60
+                }
+            ],
+            "name": "Salay",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAARj0C4WAnizh5MYFxR4Fm687HHuTg",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/08dWJ0fEK7gFz5nN3aFlnt/tracks",
+                "total": 69
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:08dWJ0fEK7gFz5nN3aFlnt"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/2YqTeUwvYLznnKdC3ah2sd"
+            },
+            "href": "https://api.spotify.com/v1/playlists/2YqTeUwvYLznnKdC3ah2sd",
+            "id": "2YqTeUwvYLznnKdC3ah2sd",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e02042b5cc9a1a0a97cfc005ee8ab67616d00001e02537de4a19f2352747a36172eab67616d00001e025c7336d25ca101fbb0855647ab67616d00001e025f3aef5159749e4b61686670",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e02042b5cc9a1a0a97cfc005ee8ab67616d00001e02537de4a19f2352747a36172eab67616d00001e025c7336d25ca101fbb0855647ab67616d00001e025f3aef5159749e4b61686670",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e02042b5cc9a1a0a97cfc005ee8ab67616d00001e02537de4a19f2352747a36172eab67616d00001e025c7336d25ca101fbb0855647ab67616d00001e025f3aef5159749e4b61686670",
+                    "width": 60
+                }
+            ],
+            "name": "Corridos",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAAEoyZFZdofjTh4Z8+c6NdGDQ4i+Rf",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/2YqTeUwvYLznnKdC3ah2sd/tracks",
+                "total": 17
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:2YqTeUwvYLznnKdC3ah2sd"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/60btAwJb8JRytOvDJnsrZ5"
+            },
+            "href": "https://api.spotify.com/v1/playlists/60btAwJb8JRytOvDJnsrZ5",
+            "id": "60btAwJb8JRytOvDJnsrZ5",
+            "images": null,
+            "name": "Los me gusta",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAAAu3eGlhDQ0J13Yn1xUMJWy/mWGJx",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/60btAwJb8JRytOvDJnsrZ5/tracks",
+                "total": 0
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:60btAwJb8JRytOvDJnsrZ5"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/2ZELetwIfkDAMYJOuu6cBb"
+            },
+            "href": "https://api.spotify.com/v1/playlists/2ZELetwIfkDAMYJOuu6cBb",
+            "id": "2ZELetwIfkDAMYJOuu6cBb",
+            "images": [
+                {
+                    "height": null,
+                    "url": "https://i.scdn.co/image/ab67616d00001e02ee9e89e3fa7617372c2c7540",
+                    "width": null
+                }
+            ],
+            "name": "Folklore",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAABOn3uaqvFrZXQtK/WpJK3RnSo7Dc",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/2ZELetwIfkDAMYJOuu6cBb/tracks",
+                "total": 2
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:2ZELetwIfkDAMYJOuu6cBb"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/3dYNeeEad37tAfbijjAC4u"
+            },
+            "href": "https://api.spotify.com/v1/playlists/3dYNeeEad37tAfbijjAC4u",
+            "id": "3dYNeeEad37tAfbijjAC4u",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e02211bcd4f50464c15d7c7f111ab67616d00001e028c5e26c45a7703cf16f509f7ab67616d00001e029d37d1aba5ae9b00ade41865ab67616d00001e02de5f51296e162e8ec5d56899",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e02211bcd4f50464c15d7c7f111ab67616d00001e028c5e26c45a7703cf16f509f7ab67616d00001e029d37d1aba5ae9b00ade41865ab67616d00001e02de5f51296e162e8ec5d56899",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e02211bcd4f50464c15d7c7f111ab67616d00001e028c5e26c45a7703cf16f509f7ab67616d00001e029d37d1aba5ae9b00ade41865ab67616d00001e02de5f51296e162e8ec5d56899",
+                    "width": 60
+                }
+            ],
+            "name": "Tiesto",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAACUMte8Rj4DBr3nkNLa/+Ro0kahke",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/3dYNeeEad37tAfbijjAC4u/tracks",
+                "total": 8
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:3dYNeeEad37tAfbijjAC4u"
+        },
+        {
+            "collaborative": false,
+            "description": "",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/1rzWyTYV8bvToLyHXubRh1"
+            },
+            "href": "https://api.spotify.com/v1/playlists/1rzWyTYV8bvToLyHXubRh1",
+            "id": "1rzWyTYV8bvToLyHXubRh1",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e0272c57da7edfe8e915182cdd4ab67616d00001e028c77bcf5f5a227d270d23370ab67616d00001e02b800b91af812df0ce0dd2883",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e0272c57da7edfe8e915182cdd4ab67616d00001e028c77bcf5f5a227d270d23370ab67616d00001e02b800b91af812df0ce0dd2883",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e0272c57da7edfe8e915182cdd4ab67616d00001e028c77bcf5f5a227d270d23370ab67616d00001e02b800b91af812df0ce0dd2883",
+                    "width": 60
+                }
+            ],
+            "name": "Martin Garrix",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAAIrSGjIiLSCatOwd+4L4mdiye8Jet",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/1rzWyTYV8bvToLyHXubRh1/tracks",
+                "total": 31
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:1rzWyTYV8bvToLyHXubRh1"
+        },
+        {
+            "collaborative": false,
+            "description": "Estoy enamorado",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/2Nt8TWGs7twJQRhqWKYmes"
+            },
+            "href": "https://api.spotify.com/v1/playlists/2Nt8TWGs7twJQRhqWKYmes",
+            "id": "2Nt8TWGs7twJQRhqWKYmes",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e024adbeb26299adca766cec2c5ab67616d00001e0250a3147b4edd7701a876c6ceab67616d00001e028a3f0a3ca7929dea23cd274cab67616d00001e02a9f6c04ba168640b48aa5795",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e024adbeb26299adca766cec2c5ab67616d00001e0250a3147b4edd7701a876c6ceab67616d00001e028a3f0a3ca7929dea23cd274cab67616d00001e02a9f6c04ba168640b48aa5795",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e024adbeb26299adca766cec2c5ab67616d00001e0250a3147b4edd7701a876c6ceab67616d00001e028a3f0a3ca7929dea23cd274cab67616d00001e02a9f6c04ba168640b48aa5795",
+                    "width": 60
+                }
+            ],
+            "name": "Billie Eilish",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAALme7VYomXYD0S7VbMSfFxOjvtgud",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/2Nt8TWGs7twJQRhqWKYmes/tracks",
+                "total": 32
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:2Nt8TWGs7twJQRhqWKYmes"
+        },
+        {
+            "collaborative": false,
+            "description": "Amo la musica elecctronica.",
+            "external_urls": {
+                "spotify": "https://open.spotify.com/playlist/19tE3SkkxyFrh5GxY6x9Tp"
+            },
+            "href": "https://api.spotify.com/v1/playlists/19tE3SkkxyFrh5GxY6x9Tp",
+            "id": "19tE3SkkxyFrh5GxY6x9Tp",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://mosaic.scdn.co/640/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e026abad6915a2216dc18e7e3a7ab67616d00001e02a108e07c661f9fc54de9c43aab67616d00001e02d0d90d516468655298b85062",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://mosaic.scdn.co/300/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e026abad6915a2216dc18e7e3a7ab67616d00001e02a108e07c661f9fc54de9c43aab67616d00001e02d0d90d516468655298b85062",
+                    "width": 300
+                },
+                {
+                    "height": 60,
+                    "url": "https://mosaic.scdn.co/60/ab67616d00001e0264f8a309aa3c0a66a31fc374ab67616d00001e026abad6915a2216dc18e7e3a7ab67616d00001e02a108e07c661f9fc54de9c43aab67616d00001e02d0d90d516468655298b85062",
+                    "width": 60
+                }
+            ],
+            "name": "Electronic",
+            "owner": {
+                "display_name": "Roman",
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/user/kka1knztq7aigfnz8uao26vqq"
+                },
+                "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq",
+                "id": "kka1knztq7aigfnz8uao26vqq",
+                "type": "user",
+                "uri": "spotify:user:kka1knztq7aigfnz8uao26vqq"
+            },
+            "primary_color": null,
+            "public": true,
+            "snapshot_id": "AAAAFauFUPQpNBV8l3pCvJJOILszJZIR",
+            "tracks": {
+                "href": "https://api.spotify.com/v1/playlists/19tE3SkkxyFrh5GxY6x9Tp/tracks",
+                "total": 19
+            },
+            "type": "playlist",
+            "uri": "spotify:playlist:19tE3SkkxyFrh5GxY6x9Tp"
+        }
+    ]
+}
+
+async function showPlayLists() {
+    /*const playlists = await getPlayListsUser();*/
+    const playlists = datosia;
+    console.log(playlists);
+
+    const playListsGrid = document.getElementById('slot-card-playlist-library');
+
+    playlists?.items?.forEach(function (item) {
+        console.log(item)
+        const playList = document.createElement('button');
+        playList.onclick = `showTracksPlayList(${item.id})`
+        playList.setAttribute("onclick",`showTracksPlayList(${item.id})`);
+        playList.classList.add('card-playlist');
+        playList.classList.add('pointer');
+        /*playList.classList.add('card');*/
+
+        playList.innerHTML = `
+        <div class="play-list">
+            <i class="fa-solid fa-play"></i>
+        </div>
+        <div class="playlist-presentations">
+            <img src="${item?.images[0]?.url}" alt="as"/>
+        </div>
+        <div class="titles">
+            <div class="playlist-name">
+                <span>${item.name}</span>
+            </div>
+            <div class="playlist-description">
+
+                <span>${item.type}</span>-
+                <span>${item.owner.display_name}</span>
+            </div>
+        </div>
+        `;
+
+        playListsGrid.appendChild(playList);
+    });
+}
+
+
+async function showTracksPlayList(id) {
+    const tracks = await fetchWebApi(
+        `v1/playlists/`+id,
+        'GET'
+    );
+    console.log(tracks)
+}
+
 //#endregion
 
 //#region MAIN
@@ -307,47 +796,48 @@ const code = args.get('code');
 // Si encuentro el code con contenido entonces
 console.log(code)
 if (code) {
-  console.log("Ingresa a otbtener token");
-  const token = await getToken(code);
-  console.log(token);
-  console.log("Guardamos el token en el local storage");
-  currentToken.save(token);
+    console.log("Ingresa a otbtener token");
+    const token = await getToken(code);
+    console.log(token);
+    console.log("Guardamos el token en el local storage");
+    currentToken.save(token);
 
-  // Eliminar el código de la URL para que podamos actualizar correctamente.
-  // Eliminar el code desde el URL para que nosotros podamos refrescar correcatmente
-  console.log("Obtenemos el href de windows");
-  const url = new URL(window.location.href);
-  console.log(url);
-  console.log("eliminamos code del url");
-  url.searchParams.delete("code");
-  console.log(url);
+    // Eliminar el código de la URL para que podamos actualizar correctamente.
+    // Eliminar el code desde el URL para que nosotros podamos refrescar correcatmente
+    console.log("Obtenemos el href de windows");
+    const url = new URL(window.location.href);
+    console.log(url);
+    console.log("eliminamos code del url");
+    url.searchParams.delete("code");
+    console.log(url);
 
-  console.log("buscamos reemplazar algo");
-  const updatedUrl = url.search ? url.href : url.href.replace('?', '');
-  console.log(updatedUrl);
-  window.history.replaceState({}, document.title, updatedUrl);
+    console.log("buscamos reemplazar algo");
+    const updatedUrl = url.search ? url.href : url.href.replace('?', '');
+    console.log(updatedUrl);
+    window.history.replaceState({}, document.title, updatedUrl);
 }
 
 // Si tenemos un token, hemos iniciado sesión, por lo que obtenemos los datos del usuario y representamos la plantilla de inicio de sesión.
 // Si tenemos un token, si estamos LOGEADOS, entonces mostramos la pagina de logeado, MOSTRANDO todos los DATOS DEL USUARIO
 if (currentToken.access_token) {
-  const userData = await getUserData();
-  //solo en un lugar sucede esto
-  renderTemplate("slot-user-img", "user-loged-img", userData);
-  renderTemplate("main", "logged-in-template", userData);
-  renderTemplate("oauth", "oauth-template", currentToken);
+    const userData = await getUserData();
+    //solo en un lugar sucede esto
+    renderTemplate("slot-user-img", "user-loged-img", userData);
+    renderTemplate("main", "logged-in-template", userData);
+    renderTemplate("oauth", "oauth-template", currentToken);
 
-  const playlists = await getPlayListsUser();
-  console.log(playlists);
+    showPlayLists();
 }
+showPlayLists();
 
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.
 // Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login
 if (!currentToken.access_token) {
-  renderTemplate("slot-user-img", "login");
+    renderTemplate("slot-user-img", "login");
 }
 //#endregion
 
+/*
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = currentToken.access_token;
@@ -390,4 +880,4 @@ window.onSpotifyWebPlaybackSDKReady = () => {
       console.log('The Web Playback SDK successfully connected to Spotify!');
     }
   })
-}
+}*/
