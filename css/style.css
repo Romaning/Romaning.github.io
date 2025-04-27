@@ -143,11 +143,11 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.6rem;
+    margin-top: 0.3rem;
 }
 
 .user img {
-    height: 1.6rem;
+    /*height: 1.6rem;*/
 }
 
 #slot-user-img {
