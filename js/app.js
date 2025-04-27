@@ -250,11 +250,11 @@ let getTopTracks = async () => {
 
 async function getTracksClick() {
     const topTracks = await getTopTracks();
-    console.log(
+    /*console.log(
         topTracks?.map(
             ({name, artists}) => `${name} by ${artists.map(artist => artist.name).join(', ')}`
         )
-    );
+    );*/
 }
 
 // Funcion Guardar las N canciones seleccionadas a un playlist llamado "My Top tracks playlist"
@@ -290,7 +290,7 @@ async function createPlaylistAndAddTracksClick() {
     ];
 
     const createdPlaylist = await createPlaylist(tracksUri);
-    console.log(createdPlaylist.name, createdPlaylist.id);
+    /*console.log(createdPlaylist.name, createdPlaylist.id);*/
 }
 
 async function showTracksPlayList(id) {
@@ -305,7 +305,7 @@ async function showTracksPlayList(id) {
     iframe.setAttribute('src', 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator&theme=0');
     const viewCategories = document.querySelector('.view-categories');
     viewCategories.hidden = true;
-    console.log(tracks)
+    /*console.log(tracks)*/
 }
 
 async function getPlayListsUser() {
@@ -755,7 +755,7 @@ const datosia = {
 async function showPlayLists() {
     const playlists = await getPlayListsUser();
     /*const playlists = datosia;*/
-    console.log(playlists);
+    /*console.log(playlists);*/
 
     const playListsGrid = document.getElementById('slot-card-playlist-library');
 
@@ -763,7 +763,7 @@ async function showPlayLists() {
 
     }
     playlists?.items?.forEach(function (item) {
-        console.log(item)
+        /*console.log(item)*/
         const playList = document.createElement('button');
         /*playList.onclick = showTracksPlayList(item.id);*/
         /*playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
@@ -1071,14 +1071,14 @@ showPlayLists()*/
 async function showCategories() {
     const categories = await getCategoriesUser();
     /*const categories = catia;*/
-    console.log(categories);
+    /*console.log(categories);*/
     const slotSectiopnCategories = document.getElementById('slot-categories-user');
 
     if (categories?.items != null) {
 
     }
     categories?.categories?.items?.forEach(function (item) {
-        console.log(item)
+        /*console.log(item)*/
 
         const sectionEspecCat = document.createElement('div');
         /*sectionEspecCat.onclick = showTracksPlayList(item.id);*/
@@ -1120,7 +1120,7 @@ const code = args.get('code');
 
 // Si encontramos un código, estamos en una devolución de llamada, hacemos un intercambio de tokens
 // Si encuentro el code con contenido entonces
-console.log(code)
+/*console.log(code)*/
 if (code) {
     /*console.log("Ingresa a otbtener token");*/
     const token = await getToken(code);
