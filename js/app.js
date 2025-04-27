@@ -852,7 +852,7 @@ async function showCategories() {
         </div>
         `;
 
-        slotSectiopnCategories.appendChild(playList);
+        slotSectiopnCategories.appendChild(sectionEspecCat);
     });
 }
 
