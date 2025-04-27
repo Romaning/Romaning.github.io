@@ -159,7 +159,7 @@ a {
     display: flex;
 }
 
-.center-part .btn-home{
+.center-part .btn-home {
     color: #fff;
     background-color: #232323;
     border: 0;
@@ -408,15 +408,16 @@ a {
     text-align: start;
 }
 
-.card-playlist .titles .playlist-name{
+.card-playlist .titles .playlist-name {
     font-size: 1.3rem;
     font-weight: bold;
 }
 
-.card-playlist .titles .playlist-description{
+.card-playlist .titles .playlist-description {
     font-size: 0.8rem;
     opacity: 0.6;
 }
+
 /* ######################################### Side bar ######################################### */
 
 /* ######################################### tres botones todo, musica y podcasts ######################################### */
@@ -464,11 +465,13 @@ a {
     font-size: 1.3rem;
     font-weight: 800;
 }
+
 #slot-categories-user {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(162px, 1fr));
     /*gap: clamp(1rem, 2vw, 1.5rem); *//* Espaciado fluido */
 }
+
 .card {
     width: 162px;
     height: fit-content;
@@ -741,6 +744,23 @@ a {
 
     .option .icons .fa-plus {
         margin: 1rem;
+    }
+
+    #slot-card-playlist-library .card-playlist .play-list {
+        top: 15%;
+    }
+
+    #slot-card-playlist-library .card-playlist img{
+        width: 60px;
+    }
+
+    #slot-card-playlist-library .card-playlist:hover{
+        --translate-play-list: 5rem;
+        transition: all 2s ease-out;
+    }
+
+    #slot-card-playlist-library .card-playlist{
+        height: 60px;
     }
 
     .cards-container {
