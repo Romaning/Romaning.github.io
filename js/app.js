@@ -301,6 +301,17 @@ async function getPlayListsUser() {
     return Playlists;
 }
 
+async function showTracksPlayList(id) {
+    console.log("entra" + id)
+    const tracks = await fetchWebApi(
+        `v1/playlists/${id}`,
+        'GET'
+    );
+    const ifrm = document.getElementsByClassName("emb");
+    ifrm.removeAttribute("hidden");
+    console.log(tracks)
+}
+
 const datosia = {
     "href": "https://api.spotify.com/v1/users/kka1knztq7aigfnz8uao26vqq/playlists?offset=0&limit=50&locale=es-419,es;q%3D0.9,en;q%3D0.8",
     "limit": 50,
@@ -748,7 +759,7 @@ async function showPlayLists() {
         console.log(item)
         const playList = document.createElement('button');
         /*playList.onclick = `showTracksPlayList(${item.id})`*/
-        playList.setAttribute("onclick",`showTracksPlayList(${item.id})`);
+        playList.setAttribute("onclick",`showTracksPlayList('${item.id})'`);
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
         /*playList.classList.add('card');*/
@@ -776,15 +787,6 @@ async function showPlayLists() {
     });
 }
 
-async function showTracksPlayList(id) {
-    const tracks = await fetchWebApi(
-        `v1/playlists/`+id,
-        'GET'
-    );
-    const ifrm = document.getElementsByClassName("emb");
-    ifrm.removeAttribute("hidden");
-    console.log(tracks)
-}
 
 //#endregion
 
