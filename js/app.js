@@ -735,6 +735,7 @@ const datosia = {
         }
     ]
 }
+/*showPlayLists();*/
 
 async function showPlayLists() {
     const playlists = await getPlayListsUser();
@@ -829,7 +830,6 @@ if (currentToken.access_token) {
 
     showPlayLists();
 }
-showPlayLists();
 
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.
 // Si NO tenemos un token, si NO estamos logeados, entonces mostrar pagina de login
