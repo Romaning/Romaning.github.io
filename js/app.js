@@ -1065,11 +1065,11 @@ const catia = {
         "total": 54
     }
 };
-showCategories();
+/*showCategories();*/
 
 async function showCategories() {
-    /*const categories = await getCategoriesUser();*/
-    const categories = catia;
+    const categories = await getCategoriesUser();
+    /*const categories = catia;*/
     console.log(categories);
     const slotSectiopnCategories = document.getElementById('slot-categories-user');
 
