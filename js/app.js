@@ -746,6 +746,7 @@ const datosia = {
         }
     ]
 }
+
 /*showPlayLists();*/
 
 async function showPlayLists() {
@@ -755,21 +756,28 @@ async function showPlayLists() {
 
     const playListsGrid = document.getElementById('slot-card-playlist-library');
 
+    if (playlists?.items != null) {
+
+    }
     playlists?.items?.forEach(function (item) {
         console.log(item)
         const playList = document.createElement('button');
-        playList.onclick = showTracksPlayList(item.id);
+        /*playList.onclick = showTracksPlayList(item.id);*/
         /*playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
         /*playList.classList.add('card');*/
 
+        let imagenUrl = ""
+        if(item.images != null){
+            imagenUrl = item?.images[0]?.url;
+        }
         playList.innerHTML = `
         <div class="play-list">
             <i class="fa-solid fa-play"></i>
         </div>
         <div class="playlist-presentations">
-            <img src="${item?.images[0]?.url}" alt="as"/>
+            <img src="${imagenUrl}" alt="as"/>
         </div>
         <div class="titles">
             <div class="playlist-name">
