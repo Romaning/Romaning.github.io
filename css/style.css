@@ -238,7 +238,7 @@ a {
     /* margin: 0.5rem 0.5rem 0 0.5rem; */
     margin: 0 /*top*/ 0 /*right*/ 0 /*bottom*/ 0.5rem /*izq*/;
     border-radius: 0.5rem;
-    height: 100vh;
+    height: 87.6%;
     /*width: 192px;*/
 }
 
@@ -393,6 +393,23 @@ a {
     opacity: var(--a);
     transition: all 0.4s linear;
     transform: translateX(var(--translate-play-list));
+}
+
+.card-playlist .titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+}
+
+.card-playlist .titles .playlist-name{
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.card-playlist .titles .playlist-description{
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 /* ######################################### Side bar ######################################### */
 
