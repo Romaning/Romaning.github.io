@@ -456,7 +456,7 @@ a {
 
 .cards-container {
     display: flex;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
 }
 
 .card-heading {
@@ -464,7 +464,11 @@ a {
     font-size: 1.3rem;
     font-weight: 800;
 }
-
+#slot-categories-user {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(162px, 1fr));
+    /*gap: clamp(1rem, 2vw, 1.5rem); *//* Espaciado fluido */
+}
 .card {
     width: 162px;
     height: fit-content;

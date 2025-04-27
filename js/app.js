@@ -813,10 +813,263 @@ async function getCategoriesUser() {
 
     return Categories;
 }
+const catia = {
+    "categories": {
+        "href": "https://api.spotify.com/v1/browse/categories?offset=0&limit=20&locale=es-419,es;q%3D0.9,en;q%3D0.8",
+        "items": [
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAt0tbjZptfcdMSKl3",
+                "id": "0JQ5DAt0tbjZptfcdMSKl3",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/728ed47fc1674feb95f7ac20236eb6d7.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Creado para ti"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFz6FAsUtgAab",
+                "id": "0JQ5DAqbMKFz6FAsUtgAab",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/728ed47fc1674feb95f7ac20236eb6d7.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Nuevos lanzamientos"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFxXaXKP7zcDp",
+                "id": "0JQ5DAqbMKFxXaXKP7zcDp",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/latin-274x274_befbbd1fbb8e045491576e317cb16cdf_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Latina"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEC4WFtoNRpw",
+                "id": "0JQ5DAqbMKFEC4WFtoNRpw",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/pop-274x274_447148649685019f5e2a03a39e78ba52_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Pop"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFQIL0AXnG5AK",
+                "id": "0JQ5DAqbMKFQIL0AXnG5AK",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/ac75ec857b714a118c73218bb58664e5.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Tendencias"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFR9D66iFXqzk",
+                "id": "0JQ5DAqbMKFR9D66iFXqzk",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/cb9d28c9b084483caf81ef9c4a6420af.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Cumbia"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAudkNjCgYMM0TZXDw",
+                "id": "0JQ5DAudkNjCgYMM0TZXDw",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://charts-images.scdn.co/spotify-charts-logos/music_charts_search_arrow_274x274.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Rankings"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFHOzuVTgTizF",
+                "id": "0JQ5DAqbMKFHOzuVTgTizF",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/edm-274x274_0ef612604200a9c14995432994455a6d_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Dance/Electrónica"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFzHmL4tf05da",
+                "id": "0JQ5DAqbMKFzHmL4tf05da",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/original/mood-274x274_976986a31ac8c49794cbdc7246fd5ad7_274x274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Estado de ánimo"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFCWjUTdzaG0e",
+                "id": "0JQ5DAqbMKFCWjUTdzaG0e",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/fe06caf056474bc58862591cd60b57fc.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Indie"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFAXlCG6QvYQ4",
+                "id": "0JQ5DAqbMKFAXlCG6QvYQ4",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/links/workout-274x274.png",
+                        "width": 274
+                    }
+                ],
+                "name": "Entrenamiento"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAtOnAEpjOgUKwXyxj",
+                "id": "0JQ5DAtOnAEpjOgUKwXyxj",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/728ed47fc1674feb95f7ac20236eb6d7.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Descubre"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFQkIFo7vWoOd",
+                "id": "0JQ5DAqbMKFQkIFo7vWoOd",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/33faf792539648da945e9286a1e91492",
+                        "width": 274
+                    }
+                ],
+                "name": "Salsa"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEZPnFQSFB1T",
+                "id": "0JQ5DAqbMKFEZPnFQSFB1T",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/r-b-274x274_fd56efa72f4f63764b011b68121581d8_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Rhythm & Blues"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFGvOw3O4nLAf",
+                "id": "0JQ5DAqbMKFGvOw3O4nLAf",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/2078afd91e4d431eb19efc5bee5ab131.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "Pop coreano"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr",
+                "id": "0JQ5DAqbMKFFzDl7qN9Apr",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/chill-274x274_4c46374f007813dd10b37e8d8fd35b4b_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Para relajarse"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFCuoRTxhYWow",
+                "id": "0JQ5DAqbMKFCuoRTxhYWow",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/media/derived/sleep-274x274_0d4f836af8fab7bf31526968073e671c_0_0_274_274.jpg",
+                        "width": 274
+                    }
+                ],
+                "name": "Dormir"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFA6SOHvT3gck",
+                "id": "0JQ5DAqbMKFA6SOHvT3gck",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/7ee6530d5b3c4acc9a0957046bf11d63",
+                        "width": 274
+                    }
+                ],
+                "name": "Fiesta"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFx0uLQR2okcc",
+                "id": "0JQ5DAqbMKFx0uLQR2okcc",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/04da469dd7be4dab96659aa1fa9f0ac9.jpeg",
+                        "width": 274
+                    }
+                ],
+                "name": "En casa"
+            },
+            {
+                "href": "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFIVNxQgRNSg0",
+                "id": "0JQ5DAqbMKFIVNxQgRNSg0",
+                "icons": [
+                    {
+                        "height": 274,
+                        "url": "https://t.scdn.co/images/04111a3b810243288d81a539ba03f8d0",
+                        "width": 274
+                    }
+                ],
+                "name": "Décadas"
+            }
+        ],
+        "limit": 20,
+        "next": "https://api.spotify.com/v1/browse/categories?offset=20&limit=20&locale=es-419,es;q%3D0.9,en;q%3D0.8",
+        "offset": 0,
+        "previous": null,
+        "total": 54
+    }
+};
+showCategories();
 
 async function showCategories() {
-    const categories = await getCategoriesUser();
-    /*const categories = datosia;*/
+    /*const categories = await getCategoriesUser();*/
+    const categories = catia;
     console.log(categories);
     const slotSectiopnCategories = document.getElementById('slot-categories-user');
 
@@ -846,7 +1099,7 @@ async function showCategories() {
             <div class="play">
                 <i class="fa-solid fa-play"></i>
             </div>
-            <img class="card-img" src="${item.icons[0].url}" height="${item.icons[0].height}" width="${item.icons[0].width}" alt="card image">
+            <img class="card-img" src="${item.icons[0].url}" alt="card image">
             <p class="card-title">${item.name}</p>
             <!--<p class="card-info">The Weeknd</p>-->
         </div>
