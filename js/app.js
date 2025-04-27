@@ -836,7 +836,7 @@ async function showCategories() {
         /*sectionEspecCat.classList.add('card');*/
 
         let imagenUrl = ""
-        if (item.images != null) {
+        if (item?.images != null) {
             imagenUrl = item?.images[0]?.url;
         } else {
             imagenUrl = imgLike;
