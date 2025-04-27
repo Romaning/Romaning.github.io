@@ -171,7 +171,7 @@ function renderTemplate(targetId /* a donde se renderiza */, templateId /* que p
       const prefix = targetType === "PROPERTY" ? "data." : "";
       const expression = prefix + attr.value.replace(/;\n\r\n/g, "");
 
-      // Quiza sea mejor utilizar un framework con más validación aquí
+      // quiza seria mejor utilizar un framework para validaciones aqui (documentacion)
       try {
         ele[targetProp] = targetType === "PROPERTY" ? eval(expression) : () => { eval(expression) };
         ele.removeAttribute(attr.name);
@@ -219,16 +219,19 @@ async function redirectToSpotifyAuthorize() {
   window.location.href = authUrl.toString();
 }
 
+// 1. Función declarativa
 // Se activan como controladores, realizan algo o escriben en la BD directamente, obtienen token, permite la salida del sistema
 async function loginWithSpotifyClick() {
   await redirectToSpotifyAuthorize();
 }
 
-async function logoutClick() {
+// 2. Función expresiva
+let logoutClick = async function () {
   localStorage.clear();
   window.location.href = redirectUrl;
 }
 
+// 1. Función declarativa
 // Aqui tenemos la funcion de RENOVAR EL TOKEN
 async function refreshTokenClick() {
   const token = await refreshToken();
@@ -237,9 +240,7 @@ async function refreshTokenClick() {
 }
 
 // funcion para obtener las 5 mas escuchadas
-async function getTopTracks() {
-  return (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;
-}
+let getTopTracks = async () => { (await fetchWebApi('v1/me/top/tracks?time_range=long_term&limit=5', 'GET')).items;}
 
 async function getTracksClick() {
   const topTracks = await getTopTracks();
@@ -334,3 +335,47 @@ if (!currentToken.access_token) {
   renderTemplate("slot-user-img", "login");
 }
 //#endregion
+
+
+window.onSpotifyWebPlaybackSDKReady = () => {
+  const token = currentToken.access_token;
+  const player = new Spotify.Player({
+    name: 'Web Playback SDK Quick Start Player',
+    getOAuthToken: cb => {
+      cb(token);
+    },
+    volume: 0.5
+  });
+
+  // Ready
+  player.addListener('ready', ({device_id}) => {
+    console.log('Ready with Device ID', device_id);
+  });
+
+  // Not Ready
+  player.addListener('not_ready', ({device_id}) => {
+    console.log('Device ID has gone offline', device_id);
+  });
+
+  player.addListener('initialization_error', ({message}) => {
+    console.error(message);
+  });
+
+  player.addListener('authentication_error', ({message}) => {
+    console.error(message);
+  });
+
+  player.addListener('account_error', ({message}) => {
+    console.error(message);
+  });
+
+  document.getElementById('togglePlay').onclick = function () {
+    player.togglePlay();
+  };
+
+  player.connect().then(success => {
+    if (success) {
+      console.log('The Web Playback SDK successfully connected to Spotify!');
+    }
+  })
+}
