@@ -753,10 +753,10 @@ const datosia = {
 }
 
 /*showPlayLists();*/
-showPlayLists()
+/*showPlayLists()*/
 async function showPlayLists() {
-    /*const playlists = await getPlayListsUser();*/
-    const playlists = datosia;
+    const playlists = await getPlayListsUser();
+    /*const playlists = datosia;*/
     console.log(playlists);
 
     const playListsGrid = document.getElementById('slot-card-playlist-library');
