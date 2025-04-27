@@ -307,8 +307,8 @@ async function showTracksPlayList(id) {
         `v1/playlists/${id}`,
         'GET'
     );
-    const ifrm = document.getElementsByClassName("emb");
-    ifrm.removeAttribute("hidden");
+    const div = document.querySelector('.emb.content');
+    div.removeAttribute('hidden');
     console.log(tracks)
 }
 
@@ -766,7 +766,7 @@ async function showPlayLists() {
         /*playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
-        playList.addEventListener('click', showTracksPlayList(item.id));
+        playList.addEventListener('click', () => {showTracksPlayList(item.id)});
         /*playList.classList.add('card');*/
 
         let imagenUrl = ""
