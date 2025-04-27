@@ -289,7 +289,7 @@ async function createPlaylistAndAddTracksClick() {
 
 async function getPlayListsUser(){
   const Playlists = await fetchWebApi(
-      `v1/me/playlists?limit=50&offset=100`,
+      `v1/me/playlists?limit=50`,
       'GET'
   );
 
