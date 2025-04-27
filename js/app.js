@@ -136,6 +136,7 @@ async function fetchWebApi(endpoint, method, body) {
     return await response.json();
 }
 
+
 //#endregion
 
 //#region VIEWS
@@ -292,15 +293,6 @@ async function createPlaylistAndAddTracksClick() {
     console.log(createdPlaylist.name, createdPlaylist.id);
 }
 
-async function getPlayListsUser() {
-    const Playlists = await fetchWebApi(
-        `v1/me/playlists?limit=50`,
-        'GET'
-    );
-
-    return Playlists;
-}
-
 async function showTracksPlayList(id) {
     console.log("entra" + id)
     const tracks = await fetchWebApi(
@@ -309,12 +301,20 @@ async function showTracksPlayList(id) {
     );
     const div = document.querySelector('.emb.content');
     div.removeAttribute('hidden');
-
     const iframe = document.querySelector('.iframe-iframe');
     iframe.setAttribute('src', 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator&theme=0');
     const viewCategories = document.querySelector('.view-categories');
     viewCategories.hidden = true;
     console.log(tracks)
+}
+
+async function getPlayListsUser() {
+    const Playlists = await fetchWebApi(
+        `v1/me/playlists?limit=50`,
+        'GET'
+    );
+
+    return Playlists;
 }
 
 const datosia = {
@@ -805,10 +805,57 @@ async function showPlayLists() {
     });
 }
 
-function showCategories(){
-    const viewCategories = document.querySelector('.view-categories');
-    viewCategories.hidden = false;
+async function getCategoriesUser() {
+    const Categories = await fetchWebApi(
+        `v1/browse/categories`,
+        'GET'
+    );
+
+    return Categories;
 }
+
+async function showCategories() {
+    const categories = await getCategoriesUser();
+    /*const categories = datosia;*/
+    console.log(categories);
+    const slotSectiopnCategories = document.getElementById('slot-categories-user');
+
+    if (categories?.items != null) {
+
+    }
+    categories?.items?.forEach(function (item) {
+        console.log(item)
+
+        const sectionEspecCat = document.createElement('div');
+        /*sectionEspecCat.onclick = showTracksPlayList(item.id);*/
+        /*sectionEspecCat.setAttribute("onclick",`showTracksPlayList('${item.id}')`);*/
+        sectionEspecCat.classList.add('cards-container');
+        sectionEspecCat.addEventListener('click', () => {
+            showTracksPlayList(item.id)
+        });
+        /*sectionEspecCat.classList.add('card');*/
+
+        let imagenUrl = ""
+        if (item.images != null) {
+            imagenUrl = item?.images[0]?.url;
+        } else {
+            imagenUrl = imgLike;
+        }
+        sectionEspecCat.innerHTML = `
+        <div class="card pointer">
+            <div class="play">
+                <i class="fa-solid fa-play"></i>
+            </div>
+            <img class="card-img" src="${item.icons[0].url}" height="${item.icons[0].height}" width="${item.icons[0].width}" alt="card image">
+            <p class="card-title">${item.name}</p>
+            <!--<p class="card-info">The Weeknd</p>-->
+        </div>
+        `;
+
+        slotSectiopnCategories.appendChild(playList);
+    });
+}
+
 //#endregion
 
 //#region MAIN
@@ -852,6 +899,7 @@ if (currentToken.access_token) {
     renderTemplate("oauth", "oauth-template", currentToken);
 
     showPlayLists();
+    showCategories();
 }
 
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.

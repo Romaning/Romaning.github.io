@@ -14,6 +14,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
+    <script>
+        function showCategories() {
+            const div = document.querySelector('.emb.content');
+            div.hidden = true;
+            const viewCategories = document.querySelector('.view-categories');
+            viewCategories.hidden = false;
+        }
+    </script>
 </head>
 
 <body>
@@ -135,7 +143,7 @@
         </div>
         <div class="center-part">
             <div class="navigate-to-main badge pointer badge3 hover scale transition margin">
-                <button onclick="" class="btn-home fa-solid fa-house pointer"></button>
+                <span onclick="showCategories()" class="btn-home fa-solid fa-house pointer"></span>
             </div>
             <div class="hide search-track badge pointer badge3 hover scale transition margin">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -221,6 +229,19 @@
             </div>
             <!--<h1>Spotify Web Playback SDK Quick Start</h1>
             <button id="togglePlay">Toggle Play</button>-->
+            <div id="slot-categories-user">
+                <!--<h2 class="card-heading center">Recently Played</h2>
+                <div class="cards-container">
+                    <div class="card pointer">
+                        <div class="play">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <img class="card-img" src="./assets/recent.png" alt="card image">
+                        <p class="card-title">Blinding Lights</p>
+                        <p class="card-info">The Weeknd</p>
+                    </div>
+                </div>-->
+            </div>
             <h2 class="card-heading center">Recently Played</h2>
             <div class="cards-container">
                 <div class="card pointer">
