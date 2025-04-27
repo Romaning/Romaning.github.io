@@ -286,6 +286,15 @@ async function createPlaylistAndAddTracksClick() {
   const createdPlaylist = await createPlaylist(tracksUri);
   console.log(createdPlaylist.name, createdPlaylist.id);
 }
+
+async function getPlayListsUser(){
+  const Playlists = await fetchWebApi(
+      `v1/me/playlists`,
+      'GET'
+  );
+
+  return Playlists;
+}
 //#endregion
 
 //#region MAIN
@@ -327,6 +336,9 @@ if (currentToken.access_token) {
   renderTemplate("slot-user-img", "user-loged-img", userData);
   renderTemplate("main", "logged-in-template", userData);
   renderTemplate("oauth", "oauth-template", currentToken);
+
+  const playlists = await getPlayListsUser();
+  console.log(playlists);
 }
 
 // De lo contrario, no iniciaremos sesión, por lo que renderizaremos la plantilla de inicio de sesión.

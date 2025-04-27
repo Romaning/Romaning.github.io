@@ -98,6 +98,23 @@
         </tr>
     </table>
 </template>
+<template id="card-playlist-library">
+    <div class="card-playlist">
+        <div class="playlist-presentations">
+            <img width="150" data-bind-src="images[0].url" data-bind-alt="display_name" alt="as" src=""/>
+            <img width="150" data-bind-src="images[1].url" data-bind-alt="display_name" alt="as" src=""/>
+            <img width="150" data-bind-src="images[2].url" data-bind-alt="display_name" alt="as" src=""/>
+        </div>
+        <div class="titles">
+            <div class="playlist-name">
+                <span data-bind="name"></span>
+            </div>
+            <div class="playlist-description">
+                <span data-bind="type"></span>-<span data-bind="owner.display_name"></span>
+            </div>
+        </div>
+    </div>
+</template>
 <div class="sticky-nav-pro">
     <div class="sticky-nav">
         <div class="left-part right-part ">
@@ -171,6 +188,7 @@
             </div>
 
             <div class="lib-boxes hide">
+                <div id="slot-card-playlist-library"></div>
                 <!-- <div class="box">
                         <p class="box-p1 pointer">Create your first playlist</p>
                         <p class="box-p2 pointer">It's easy, we'll help you</p>
@@ -202,10 +220,8 @@
                 <button class="badge badge3 transition pointer">Podcasts</button>
             </div>
         </div>
-        <h1>Spotify Web Playback SDK Quick Start</h1>
-        <button id="togglePlay">Toggle Play</button>
-
-
+        <!--<h1>Spotify Web Playback SDK Quick Start</h1>
+        <button id="togglePlay">Toggle Play</button>-->
         <h2 class="card-heading center">Recently Played</h2>
         <div class="cards-container">
             <div class="card pointer">
