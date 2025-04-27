@@ -354,7 +354,7 @@ a {
 .card-playlist {
     width: 100%;
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     background-color: var(--side-bar-color);
     border: none;
     color: var(--body-text-color);

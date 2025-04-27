@@ -737,8 +737,8 @@ const datosia = {
 }
 
 async function showPlayLists() {
-    /*const playlists = await getPlayListsUser();*/
-    const playlists = datosia;
+    const playlists = await getPlayListsUser();
+    /*const playlists = datosia;*/
     console.log(playlists);
 
     const playListsGrid = document.getElementById('slot-card-playlist-library');
@@ -775,12 +775,13 @@ async function showPlayLists() {
     });
 }
 
-
 async function showTracksPlayList(id) {
     const tracks = await fetchWebApi(
         `v1/playlists/`+id,
         'GET'
     );
+    const ifrm = document.getElementsByClassName("emb");
+    ifrm.removeAttribute("hidden");
     console.log(tracks)
 }
 
