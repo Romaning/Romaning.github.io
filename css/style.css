@@ -344,7 +344,7 @@ a {
 }
 
 #slot-card-playlist-library {
-    height: 87.5vh;
+    height: 87.6%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
