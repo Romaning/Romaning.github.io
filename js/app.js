@@ -823,7 +823,7 @@ async function showCategories() {
     if (categories?.items != null) {
 
     }
-    categories?.items?.forEach(function (item) {
+    categories?.categories?.items?.forEach(function (item) {
         console.log(item)
 
         const sectionEspecCat = document.createElement('div');
