@@ -759,7 +759,7 @@ async function showPlayLists() {
         console.log(item)
         const playList = document.createElement('button');
         /*playList.onclick = `showTracksPlayList(${item.id})`*/
-        playList.setAttribute("onclick",`showTracksPlayList('${item.id})'`);
+        playList.setAttribute("onclick",`showTracksPlayList('${item.id}')`);
         playList.classList.add('card-playlist');
         playList.classList.add('pointer');
         /*playList.classList.add('card');*/
