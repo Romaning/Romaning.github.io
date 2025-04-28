@@ -38,6 +38,14 @@ AVANCES EN CSS
 11. propiedad gap 
 12. ....
 
+
+PROYECTO
+--
+Spotify tiene un API para desarrolladores, el objetivo de este proyecto es aplicar todo lo aprendido en las clases del diplomado Modulo 1
+![img_4.png](mezzanine%2Fimg_4.png)
+
+![img_5.png](mezzanine%2Fimg_5.png)![img_6.png](mezzanine%2Fimg_6.png)
+
 HERRAMIENTAS
 --
 
@@ -52,6 +60,4 @@ el objetivo es usar netamente html, css y javascript.
 
 se uso GIT y GITHUB para el despligue del proyecto en la nube
 ![img.png](mezzanine%2Fimg.png)
-
-PROYECTO
---
+![img_7.png](mezzanine%2Fimg_7.png)
